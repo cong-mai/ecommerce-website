@@ -6,18 +6,17 @@ import imageLogo from '../../assets/images/logo-login.png'
 import { Image } from 'antd'
 import { EyeFilled, EyeInvisibleFilled } from '@ant-design/icons'
 import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import * as UserService from '../../services/UserService'
 import { useMutationHooks } from '../../hooks/useMutationHook'
 import Loading from '../../components/LoadingComponent/Loading'
 import * as message from '../../components/Message/Message'
 import { jwtDecode } from "jwt-decode";
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { updateUser } from '../../redux/slides/userSlide'
 
 const SignInPage = () => {
   const [isShowPassword, setIsShowPassword] = useState(false)
-  const location = useLocation()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch()
@@ -43,6 +42,7 @@ const SignInPage = () => {
       } else if (isError) {
         message.error()
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccess, isError])
   
   const handleGetDetailsUser = async (id, token) => {

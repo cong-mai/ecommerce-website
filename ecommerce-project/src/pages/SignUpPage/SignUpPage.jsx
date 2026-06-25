@@ -38,6 +38,7 @@ const SignUpPage = () => {
     } else if (isError) {
       message.error()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, isError])
 
   const handleOnchangePassword = (value) => {

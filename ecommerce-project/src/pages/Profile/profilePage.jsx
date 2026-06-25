@@ -10,7 +10,7 @@ import { useMutationHooks } from '../../hooks/useMutationHook'
 import Loading from '../../components/LoadingComponent/Loading'
 import * as message from '../../components/Message/Message'
 import { updateUser } from '../../redux/slides/userSlide'
-import { Button, Upload } from 'antd'
+import { Button } from 'antd'
 import { UploadOutlined} from '@ant-design/icons'
 import { getBase64 } from '../../utils'
 
@@ -29,7 +29,7 @@ const ProfilePage = () => {
     )
 
     const dispatch = useDispatch()
-    const { data, isPending, isSuccess, isError } = mutation
+    const { isPending, isSuccess, isError } = mutation
 
     useEffect(() => {
         setEmail(user?.email)
@@ -46,6 +46,7 @@ const ProfilePage = () => {
         } else if (isError) {
             message.error()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccess, isError])
 
     const handleGetDetailsUser = async (id, token) => {
