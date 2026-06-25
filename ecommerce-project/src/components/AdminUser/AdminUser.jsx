@@ -84,7 +84,6 @@ const AdminUser = () => {
                 isAdmin: res?.data?.isAdmin,
             })
         }
-        setIsLoadingUpdate(false)
     }
 
     useEffect(() => {
