@@ -7,9 +7,7 @@ import TableComponent from '../TableComponent/TableComponent'
 import InputComponent from '../InputComponent/InputComponent'
 import DrawerComponent from '../DrawerComponent/DrawerComponent'
 import Loading from '../LoadingComponent/Loading'
-import { WrapperUploadFile } from '../AdminProduct/style'
 import ModalComponent from '../ModalComponent/ModalComponent'
-import { getBase64 } from '../../utils'
 import * as message from '../../components/Message/Message'
 import { useSelector } from 'react-redux'
 import { useMutationHooks } from '../../hooks/useMutationHook'
@@ -20,7 +18,6 @@ const AdminUser = () => {
     const [isModalOpen, setIsModelOpen] = useState(false);
     const [rowSelected, setRowSelected] = useState('')
     const [isOpenDrawer, setIsOpenDrawer] = useState(false)
-    const [isLoadingUpdate, setIsLoadingUpdate] = useState(false)
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false)
     const user = useSelector((state) => state?.user)
 
@@ -253,6 +250,7 @@ const AdminUser = () => {
         } else if (isError) {
             message.error()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccess])
 
     useEffect(() => {
@@ -263,6 +261,7 @@ const AdminUser = () => {
         } else if (isErrorDeleted) {
             message.error()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccessDeleted])
 
     const handleCloseDrawer = () => {
@@ -283,6 +282,7 @@ const AdminUser = () => {
         } else if (isErrorUpdated) {
             message.error()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccessUpdated])
 
     const handleCancelDelete = () => {
@@ -335,26 +335,6 @@ const AdminUser = () => {
         })
     }
 
-    const handleOnchangeAvatar = async ({ fileList }) => {
-        const file = fileList[0]
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj);
-        }
-        setStateUser({
-            ...stateUser,
-            image: file.preview
-        })
-    }
-    const handleOnchangeAvatarDetails = async ({ fileList }) => {
-        const file = fileList[0]
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj);
-        }
-        setStateUserDetails({
-            ...stateUserDetails,
-            image: file.preview
-        })
-    }
     const onUpdateUser = () => {
         mutationUpdate.mutate({ id: rowSelected, token: user?.access_token, ...stateUserDetails }, {
             onSettled: () => {

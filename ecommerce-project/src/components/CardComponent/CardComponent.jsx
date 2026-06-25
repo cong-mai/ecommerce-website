@@ -1,5 +1,4 @@
 import React from "react";
-import { Card } from "antd";
 import { StyleNameProduct,
     WrapperReportText, WrapperPriceText,
     WrapperDiscountText, WrapperCardStyle, WrapperStyleTextSell } from './style'
@@ -9,7 +8,7 @@ import {
 import logo from '../../assets/images/logo.png'
 
 const CardComponent = (props) => { 
-    const { countInStock, description, image, name, price, rating, type, selled, discount } = props
+    const { name, price, rating, selled, discount } = props
     return (
     <WrapperCardStyle
         hoverable
@@ -23,6 +22,7 @@ const CardComponent = (props) => {
         >
             <img
                 src={logo}
+                alt="logo"
                 style={{
                     width: '68px',
                     height: '14px',

@@ -1,14 +1,11 @@
 import React from "react";
 import TypeProduct from "../../components/TypeProduct/typeProduct";
 import { WrapperTypeProduct, WrapperButtonMore, WrapperProducts } from "./styles";
-import { Slider } from "antd";
 import SliderComponent from "../../components/SliderComponent/SliderComponent";
 import slide1 from "../../assets/images/slide1.webp";
 import slide2 from "../../assets/images/slide2.webp";
 import slide3 from "../../assets/images/slide3.webp";
 import CardComponent from "../../components/CardComponent/CardComponent";
-import NavBarComponent from "../../components/NavbarComponent/NavbarComponent";
-import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
 import { useQuery } from "@tanstack/react-query";
 import * as ProductService from '../../services/ProductService'
 
@@ -20,7 +17,7 @@ const HomePage = () => {
     console.log('res', res)
     return res
   }
-   const {isLoading, data: products} = useQuery({ queryKey: ['product'], queryFn: fetchProductAll, retry: 3, retryDelay: 1000 })
+   const { data: products } = useQuery({ queryKey: ['product'], queryFn: fetchProductAll, retry: 3, retryDelay: 1000 })
    console.log('data',products)
   return (
     <>

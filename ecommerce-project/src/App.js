@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import axios from 'axios'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import DefaultComponent from './components/DefaultComponent/DefaultComponent'
 import routes from './routes'
@@ -22,6 +21,7 @@ function App() {
         handleGetDetailsUser(decoded?.id, storageData)
       }
     setIsLoading(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
    
   const handleDecoded = () => {

@@ -1,20 +1,15 @@
 import { Table } from 'antd';
-import React, { useState } from 'react'
+import React from 'react'
 import Loading from '../../components/LoadingComponent/Loading'
 // import { Excel } from "antd-table-saveas-excel";
-import { useMemo } from 'react';
 
 const TableComponent = (props) => {
   
   const { selectionType = 'checkbox', data = [], isPending = false,
     columns = [] } = props
 
-  const [rowSelectedKeys, setRowSelectedKeys] = useState([])
-
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      setRowSelectedKeys(selectedRowKeys)
-    },
+    onChange: () => {},
     getCheckboxProps: (record) => ({
       disabled: record.name === 'Disabled User',
       // Column configuration not to be checked

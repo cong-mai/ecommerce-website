@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Button, Col, Input, Row, Popover } from 'antd';
+import { Badge, Col, Popover } from 'antd';
 import { WrapperHeader, WrapperTextHeader, WrapperHeaderAccount, WrapperTextHeaderSmall, WrapperContentPopup  } from "./style";
 import {
   UserOutlined,
@@ -14,33 +14,26 @@ import { resetUser } from '../../redux/slides/userSlide'
 import Loading from '../LoadingComponent/Loading'
 import { useMutationHooks } from '../../hooks/useMutationHook'
 
-const { Search } = Input;
-
 const HeaderComponent = ({isHiddenSearch = false, isHiddenCart = false}) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
-  const [loading, setLoading] = useState(false)
   const [userName, setUserName] = useState('')
   const [userAvatar, setUserAvatar] = useState('')
   const [isOpenPopup, setIsOpenPopup] = useState(false)
   const mutationLogout = useMutationHooks(() => UserService.logoutUser())
-  const { isPending, isSuccess, isError } = mutationLogout
+  const { isPending } = mutationLogout
 
   const handleLogout = async () => {
-    setLoading(true)
     await UserService.logoutUser()
     dispatch(resetUser())
     localStorage.removeItem('access_token')
     navigate('/')
-    setLoading(false)
   }
 
   useEffect(() => {
-    setLoading(true)
     setUserName(user?.name)
     setUserAvatar(user?.avatar)
-    setLoading(false)
   }, [user?.name, user?.avatar])
   
   const content = (

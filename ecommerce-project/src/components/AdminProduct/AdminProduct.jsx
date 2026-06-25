@@ -1,5 +1,5 @@
-import { Button, Checkbox, Descriptions, Form, Input, Modal, Space } from 'antd'
-import { PlusOutlined, DeleteOutlined, EditOutlined, FastBackwardFilled, SearchOutlined } from '@ant-design/icons'
+import { Button, Form, Space } from 'antd'
+import { PlusOutlined, DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons'
 import { WrapperHeader } from './style'
 import React, { useState, useEffect, useRef } from 'react'
 import TableComponent from '../TableComponent/TableComponent'
@@ -8,7 +8,6 @@ import Loading from '../LoadingComponent/Loading'
 import InputComponent from '../InputComponent/InputComponent'
 import { WrapperUploadFile } from '../AdminUser/style'
 import { getBase64 } from '../../utils'
-import { createProduct } from '../../services/ProductService'
 import * as ProductService from '../../services/ProductService'
 import { useMutationHooks } from '../../hooks/useMutationHook'
 import { useSelector } from 'react-redux'
@@ -20,7 +19,6 @@ const AdminProduct = () => {
     const [isModalOpen, setIsModelOpen] = useState(false);
     const [rowSelected, setRowSelected] = useState('')
     const [isOpenDrawer, setIsOpenDrawer] = useState(false)
-    const [isLoadingUpdate, setIsLoadingUpdate] = useState(false)
     const [isModalOpenDelete, setIsModalOpenDelete] = useState(false)
     const user = useSelector((state) => state?.user)
     const [stateProduct, setStateProduct] = useState({
@@ -53,7 +51,7 @@ const AdminProduct = () => {
                 rating,
                 image,
                 type,
-                countInStock: countInStock } = data
+                countInStock } = data
             const res = ProductService.createProduct({
                 name,
                 price,
@@ -109,7 +107,6 @@ const AdminProduct = () => {
                 countInStock: res?.data?.countInStock,
             })
         }
-        setIsLoadingUpdate(false)
     }
 
     useEffect(() => {
@@ -297,6 +294,7 @@ const AdminProduct = () => {
         } else if (isError) {
             message.error()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccess])
 
     useEffect(() => {
@@ -307,6 +305,7 @@ const AdminProduct = () => {
         } else if (isErrorDeleted) {
             message.error()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccessDeleted])
 
     const handleCloseDrawer = () => {
@@ -330,6 +329,7 @@ const AdminProduct = () => {
         } else if (isErrorUpdated) {
             message.error()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccessUpdated])
 
     const handleCancelDelete = () => {
@@ -433,7 +433,6 @@ const AdminProduct = () => {
                         form={form}
                         onFinish={onFinish}
                         autoComplete="on"
-                        form={form}
                     >
                         <Form.Item
                             label="Name"
