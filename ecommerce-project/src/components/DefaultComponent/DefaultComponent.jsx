@@ -1,4 +1,4 @@
-import React, { Children } from "react";  
+import React from "react";
 import HeaderComponent from "../HeaderComponet/HeaderComponent";
 
 const DefaultComponent = ({children}) => {
