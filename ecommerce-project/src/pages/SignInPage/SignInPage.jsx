@@ -6,7 +6,7 @@ import imageLogo from '../../assets/images/logo-login.png'
 import { Image } from 'antd'
 import { EyeFilled, EyeInvisibleFilled } from '@ant-design/icons'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import * as UserService from '../../services/UserService'
 import { useMutationHooks } from '../../hooks/useMutationHook'
 import Loading from '../../components/LoadingComponent/Loading'
@@ -17,6 +17,7 @@ import { updateUser } from '../../redux/slides/userSlide'
 
 const SignInPage = () => {
   const [isShowPassword, setIsShowPassword] = useState(false)
+  const location = useLocation()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch()
@@ -29,25 +30,28 @@ const SignInPage = () => {
   const { data, isPending, isSuccess, isError } = mutation
 
   useEffect(() => {
-      if (isSuccess) {
+    if (isSuccess) {
+      if (location?.state) {
+        navigate(location?.state)
+      } else {
         navigate('/')
-        localStorage.setItem('access_token', JSON.stringify(data?.access_token))
-        if(data?.access_token){
-          const decoded = jwtDecode(data?.access_token)
-          console.log('decode', decoded)
-          if(decoded?.id){
-            handleGetDetailsUser(decoded?.id, data?.access_token)
-          }
-        }
-      } else if (isError) {
-        message.error()
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isSuccess, isError])
-  
+      localStorage.setItem('access_token', JSON.stringify(data?.access_token))
+      if (data?.access_token) {
+        const decoded = jwtDecode(data?.access_token)
+        if (decoded?.id) {
+          handleGetDetailsUser(decoded?.id, data?.access_token)
+        }
+      }
+    } else if (isError) {
+      message.error()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, isError])
+
   const handleGetDetailsUser = async (id, token) => {
-      const res = await UserService.getDetailsUser(id, token)
-      dispatch(updateUser({ ...res?.data, access_token: token }))
+    const res = await UserService.getDetailsUser(id, token)
+    dispatch(updateUser({ ...res?.data, access_token: token }))
   }
 
   const handleNavigateSignUp = () => {

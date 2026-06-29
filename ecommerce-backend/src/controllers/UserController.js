@@ -47,13 +47,13 @@ const loginUser = async (req, res) => {
                 message: 'The input is email'
             })
         }
-       const response = await UserService.loginUser(req.body)
-       const {refresh_token, ...newResponse} = response
-       res.cookie('refresh_token', refresh_token, {
-         httpOnly: true,
-         secure: false,
-        samesite: 'strict',
-       })
+        const response = await UserService.loginUser(req.body)
+        const { refresh_token, ...newResponse } = response
+        res.cookie('refresh_token', refresh_token, {
+            httpOnly: true,
+            secure: false,
+            samesite: 'strict',
+        })
         return res.status(200).json(newResponse)
     } catch (e) {
         return res.status(404).json({
@@ -91,6 +91,24 @@ const deleteUser = async (req, res) => {
             })
         }
         const response = await UserService.deleteUser(userId)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+const deleteMany = async (req, res) => {
+    try {
+        const ids = req.body.ids
+        if (!ids) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The ids is required'
+            })
+        }
+        const response = await UserService.deleteManyUser(ids)
         return res.status(200).json(response)
     } catch (e) {
         return res.status(404).json({
@@ -153,7 +171,7 @@ const logoutUser = async (req, res) => {
             status: 'Ok',
             message: 'Logout successfully'
         })
-        
+
     } catch (e) {
         return res.status(404).json({
             message: e
@@ -166,6 +184,7 @@ module.exports = {
     loginUser,
     updateUser,
     deleteUser,
+    deleteMany,
     getAllUser,
     getDetailsUser,
     refreshToken,

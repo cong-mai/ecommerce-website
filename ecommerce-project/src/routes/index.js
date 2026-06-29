@@ -1,6 +1,7 @@
 import HomePage from "../pages/HomePage/HomePage"
 import ProductsPage from "../pages/ProductsPage/ProductsPage"
 import OrderPage from "../pages/OrderPage/Orderpage"
+import OrderSucess from "../pages/OrderSuccess/OrderSuccess"
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage"
 import TypeProductPage from "../pages/TypeProductPage/TypeProductPage"
 import SignInPage from "../pages/SignInPage/SignInPage"
@@ -8,17 +9,20 @@ import SignUpPage from "../pages/SignUpPage/SignUpPage"
 import ProductDetailsPage from "../pages/ProductDetailsPage/ProductDetailsPage"
 import ProfilePage from "../pages/Profile/profilePage"
 import AdminPage from "../pages/AdminPage/AdminPage"
+import PaymentPage from "../pages/PaymentPage/PaymentPage"
+import MyOrderPage from "../pages/MyOrder/MyOrder"
+import DetailsOrderPage from "../pages/DetailsOrderPage/DetailsOrderPage"
 
 const routes = [
     {
         path: "/",
         page: HomePage,
         isShowHeader: true
-     },
+    },
     {
         path: "/products",
         page: ProductsPage,
-        isShowHeader: true  
+        isShowHeader: true
     },
     {
         path: "/order",
@@ -26,7 +30,32 @@ const routes = [
         isShowHeader: true
     },
     {
-        path: "/type",
+        path: '/my-order',
+        page: MyOrderPage,
+        isShowHeader: true
+    },
+    {
+        path: '/details-order/:id',
+        page: DetailsOrderPage,
+        isShowHeader: true
+    },
+    {
+        path: "/payment",
+        page: PaymentPage,
+        isShowHeader: true
+    },
+    {
+        path: '/orderSuccess',
+        page: OrderSucess,
+        isShowHeader: true
+    },
+    {
+        path: '/my-order',
+        page: MyOrderPage,
+        isShowHeader: true
+    },
+    {
+        path: "/Product/:type",
         page: TypeProductPage,
         isShowHeader: true
     },
@@ -41,7 +70,7 @@ const routes = [
         isShowHeader: false
     },
     {
-        path: "/product-details",
+        path: "/product-details/:id",
         page: ProductDetailsPage,
         isShowHeader: true
     },

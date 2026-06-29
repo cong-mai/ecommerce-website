@@ -1,4 +1,4 @@
-import { Button, Form, Space } from 'antd'
+import { Button, Form, Select, Space } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons'
 import { WrapperHeader } from './style'
 import React, { useState, useEffect, useRef } from 'react'
@@ -7,7 +7,7 @@ import DrawerComponent from '../DrawerComponent/DrawerComponent'
 import Loading from '../LoadingComponent/Loading'
 import InputComponent from '../InputComponent/InputComponent'
 import { WrapperUploadFile } from '../AdminUser/style'
-import { getBase64 } from '../../utils'
+import { getBase64, renderOptions } from '../../utils'
 import * as ProductService from '../../services/ProductService'
 import { useMutationHooks } from '../../hooks/useMutationHook'
 import { useSelector } from 'react-redux'
@@ -28,7 +28,9 @@ const AdminProduct = () => {
         rating: '',
         image: '',
         type: '',
-        countInStock: ''
+        countInStock: '',
+        newType: '',
+        discount: ''
     })
     const [stateProductDetails, setStateProductDetails] = useState({
         name: '',
@@ -37,11 +39,13 @@ const AdminProduct = () => {
         rating: '',
         image: '',
         type: '',
-        countInStock: ''
+        countInStock: '',
+        discount: ''
     })
 
     const searchInput = useRef(null)
     const [form] = Form.useForm()
+    const [formDetails] = Form.useForm()
 
     const mutation = useMutationHooks(
         (data) => {
@@ -51,7 +55,8 @@ const AdminProduct = () => {
                 rating,
                 image,
                 type,
-                countInStock } = data
+                countInStock,
+                discount } = data
             const res = ProductService.createProduct({
                 name,
                 price,
@@ -59,7 +64,8 @@ const AdminProduct = () => {
                 rating,
                 image,
                 type,
-                countInStock
+                countInStock,
+                discount
             })
             return res
         }
@@ -89,6 +95,17 @@ const AdminProduct = () => {
         },
     )
 
+    const mutationDeletedMany = useMutationHooks(
+        (data) => {
+            const { token, ...ids
+            } = data
+            const res = ProductService.deleteManyProduct(
+                ids,
+                token)
+            return res
+        },
+    )
+
     const getAllProducts = async () => {
         const res = await ProductService.getAllProduct()
         return res
@@ -105,13 +122,16 @@ const AdminProduct = () => {
                 image: res?.data?.image,
                 type: res?.data?.type,
                 countInStock: res?.data?.countInStock,
+                discount: res?.data?.discount,
             })
         }
+
     }
 
     useEffect(() => {
-        form.setFieldsValue(stateProductDetails)
-    }, [form, stateProductDetails])
+        const { image, ...rest } = stateProductDetails
+        formDetails.setFieldsValue(rest)
+    }, [formDetails, stateProductDetails])
 
     useEffect(() => {
         if (rowSelected) {
@@ -125,10 +145,23 @@ const AdminProduct = () => {
         }
         setIsOpenDrawer(true)
     }
-    const { data, isPending, isSuccess, isError } = mutation
+    const handleDeleteManyProducts = (ids) => {
+        mutationDeletedMany.mutate({ ids: ids, token: user?.access_token }, {
+            onSettled: () => {
+                queryProduct.refetch()
+            }
+        })
+    }
+    const fetchAllTypeProduct = async () => {
+        const res = await ProductService.getAllTypeProduct({ limit: 100 })
+        return res
+    }
+    const { isPending } = mutation
     const { data: dataUpdated, isPending: isLoadingUpdated, isSuccess: isSuccessUpdated, isError: isErrorUpdated } = mutationUpdate
     const { data: dataDeleted, isPending: isLoadingDeleted, isSuccess: isSuccessDeleted, isError: isErrorDeleted } = mutationDeleted
+    const { data: dataDeletedMany, isSuccess: isSuccessDelectedMany, isError: isErrorDeletedMany } = mutationDeletedMany
     const queryProduct = useQuery({ queryKey: ['product'], queryFn: getAllProducts })
+    const typeProduct = useQuery({ queryKey: ['type-product'], queryFn: fetchAllTypeProduct })
     const { isPending: isLoadingProduct, data: products } = queryProduct
     const renderAction = () => {
         return (
@@ -288,14 +321,13 @@ const AdminProduct = () => {
     })
 
     useEffect(() => {
-        if (isSuccess && data?.status === 'OK') {
+        if (isSuccessDelectedMany && dataDeletedMany?.status === 'OK') {
             message.success()
-            handleCancel()
-        } else if (isError) {
+        } else if (isErrorDeletedMany) {
             message.error()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isSuccess])
+    }, [isSuccessDelectedMany])
 
     useEffect(() => {
         if (isSuccessDeleted && dataDeleted?.status === 'OK') {
@@ -317,9 +349,10 @@ const AdminProduct = () => {
             rating: '',
             image: '',
             type: '',
-            countInStock: ''
+            countInStock: '',
+            discount: ''
         })
-        form.resetFields()
+        formDetails.resetFields()
     };
 
     useEffect(() => {
@@ -358,7 +391,24 @@ const AdminProduct = () => {
         form.resetFields()
     }
     const onFinish = () => {
-        mutation.mutate(stateProduct, {
+        const params = {
+            name: stateProduct.name,
+            price: stateProduct.price,
+            description: stateProduct.description,
+            rating: stateProduct.rating,
+            image: stateProduct.image,
+            type: stateProduct.type === 'add_type' ? stateProduct.newType : stateProduct.type,
+            countInStock: stateProduct.countInStock,
+            discount: stateProduct.discount
+        }
+        mutation.mutate(params, {
+            onSuccess: () => {
+                message.success()
+                handleCancel()
+            },
+            onError: () => {
+                message.error()
+            },
             onSettled: () => {
                 queryProduct.refetch()
             }
@@ -404,6 +454,12 @@ const AdminProduct = () => {
             }
         })
     }
+    const handleChangeSelect = (value) => {
+        setStateProduct({
+            ...stateProduct,
+            type: value
+        })
+    }
     return (
         <div>
             <WrapperHeader>Manage Products</WrapperHeader>
@@ -414,7 +470,7 @@ const AdminProduct = () => {
                 </Button>
             </div>
             <div style={{ marginTop: '20px' }}>
-                <TableComponent columns={columns} isLoading={isLoadingProduct} data={dataTable}
+                <TableComponent handleDeleteMany={handleDeleteManyProducts} columns={columns} isLoading={isLoadingProduct} data={dataTable}
                     onRow={(record, rowIndex) => {
                         return {
                             onClick: event => {
@@ -447,9 +503,24 @@ const AdminProduct = () => {
                             name="type"
                             rules={[{ required: true, message: 'Please input your type!' }]}
                         >
-                            <InputComponent value={stateProduct.type} onChange={handleOnchange} name="type" />
+                            <Select
+                                name="type"
+                                // defaultValue="lucy"
+                                // style={{ width: 120 }}
+                                value={stateProduct.type}
+                                onChange={handleChangeSelect}
+                                options={renderOptions(typeProduct?.data?.data)}
+                            />
                         </Form.Item>
-
+                        {stateProduct.type === 'add_type' && (
+                            <Form.Item
+                                label='New type'
+                                name="newType"
+                                rules={[{ required: true, message: 'Please input your type!' }]}
+                            >
+                                <InputComponent value={stateProduct.newType} onChange={handleOnchange} name="newType" />
+                            </Form.Item>
+                        )}
                         <Form.Item
                             label="count inStock"
                             name="countInStock"
@@ -479,10 +550,18 @@ const AdminProduct = () => {
                         >
                             <InputComponent value={stateProduct.rating} onChange={handleOnchange} name="rating" />
                         </Form.Item>
-
+                        <Form.Item
+                            label="Discount"
+                            name="discount"
+                            rules={[{ required: true, message: 'Please input your discount of product!' }]}
+                        >
+                            <InputComponent value={stateProduct.discount} onChange={handleOnchange} name="discount" />
+                        </Form.Item>
                         <Form.Item
                             label="Image"
                             name="image"
+                            valuePropName="fileList"
+                            getValueFromEvent={(e) => Array.isArray(e) ? e : e?.fileList}
                             rules={[{ required: true, message: 'Please input your count image!' }]}
                         >
                             <WrapperUploadFile onChange={handleOnchangeAvatar} maxCount={1} beforeUpload={() => false}>
@@ -514,7 +593,7 @@ const AdminProduct = () => {
                         wrapperCol={{ span: 18 }}
                         onFinish={onUpdateProduct}
                         autoComplete="on"
-                        form={form}
+                        form={formDetails}
                     >
                         <Form.Item
                             label="Name"
@@ -563,9 +642,18 @@ const AdminProduct = () => {
                         </Form.Item>
 
                         <Form.Item
+                            label="Discount"
+                            name="discount"
+                            rules={[{ required: true, message: 'Please input your discount of product!' }]}
+                        >
+                            <InputComponent value={stateProductDetails.discount} onChange={handleOnchangeDetails} name="discount" />
+                        </Form.Item>
+
+                        <Form.Item
                             label="Image"
                             name="image"
-                            rules={[{ required: true, message: 'Please input your count image!' }]}
+                            valuePropName="fileList"
+                            getValueFromEvent={(e) => Array.isArray(e) ? e : e?.fileList}
                         >
                             <WrapperUploadFile onChange={handleOnchangeAvatarDetails} maxCount={1} beforeUpload={() => false}>
                                 <Button >Select File</Button>

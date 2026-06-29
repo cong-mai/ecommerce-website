@@ -1,14 +1,16 @@
+import { Col, Image, InputNumber } from "antd";
 import styled from "styled-components";
-import {Image, Col, InputNumber} from "antd";
 
 export const WrapperStyleImageSmall = styled(Image)`
     height: 64px;
     width: 64px;
 `
+
 export const WrapperStyleColImage = styled(Col)`
     flex-basis: unset;
     display: flex;
 `
+
 export const WrapperStyleNameProduct = styled.h1`
     color: rgb(36, 36, 36);
     font-size: 24px;
@@ -16,15 +18,18 @@ export const WrapperStyleNameProduct = styled.h1`
     line-height: 32px;
     word-break: break-word;
 `
+
 export const WrapperStyleTextSell = styled.span`
     font-size: 15px;
     line-height: 24px;
     color: rgb(120, 120, 120)
 `
+
 export const WrapperPriceProduct = styled.div`
     background: rgb(250, 250, 250);
     border-radius: 4px;
 `
+
 export const WrapperPriceTextProduct = styled.h1`
     font-size: 32px;
     line-height: 40px;
@@ -33,6 +38,7 @@ export const WrapperPriceTextProduct = styled.h1`
     padding: 10px;
     margin-top: 10px;
 `
+
 export const WrapperAddressProduct = styled.div`
     span.address {
         text-decoration: underline;
@@ -65,8 +71,11 @@ export const WrapperInputNumber = styled(InputNumber)`
         width: 40px;
         border-top: none;
         border-bottom: none;
-        .ant-input-number-handler-wrap {
-            display: none !important;
-        }
-    };
+    }
+    .ant-input-number-handler-wrap {
+        display: none !important;
+    }
+    &:hover .ant-input-number-handler-wrap {
+        display: none !important;
+    }
 `

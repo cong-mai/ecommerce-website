@@ -14,7 +14,7 @@ const NavBarComponent = () => {
                 })
             case 'checkbox':
                 return (
-                    <Checkbox.Group style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '12px' }} onChange={onChange}>
+                    <Checkbox.Group style={{ display: 'flex', flexDirection: 'column', gap: '12px' }} onChange={onChange}>
                         {options.map((option) => {
                             return (
                                 <Checkbox style={{ marginLeft: 0 }} value={option.value}>{option.label}</Checkbox>
