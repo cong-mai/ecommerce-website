@@ -16,14 +16,14 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true)
-    const {storageData, decoded} = handleDecoded()
-      if(decoded?.id){
-        handleGetDetailsUser(decoded?.id, storageData)
-      }
+    const { storageData, decoded } = handleDecoded()
+    if (decoded?.id) {
+      handleGetDetailsUser(decoded?.id, storageData)
+    }
     setIsLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-   
+
   const handleDecoded = () => {
 
     let storageData = localStorage.getItem('access_token')
@@ -32,31 +32,40 @@ function App() {
       storageData = JSON.parse(storageData)
       decoded = jwtDecode(storageData)
     }
-    return {decoded, storageData}
+    return { decoded, storageData }
   }
   UserService.axiosJWT.interceptors.request.use(async (config) => {
     const currentTime = new Date()
-    const { decoded} = handleDecoded()
-    if(decoded?.exp < currentTime.getTime() / 1000){
-      const data = await UserService.refreshToken()
-      config.headers['token'] = `Bearer ${data?.access_token}`
+    const { decoded } = handleDecoded()
+    let storageRefreshToken = localStorage.getItem('refresh_token')
+    const refreshToken = JSON.parse(storageRefreshToken)
+    const decodedRefreshToken = jwtDecode(refreshToken)
+    if (decoded?.exp < currentTime.getTime() / 1000) {
+      if (decodedRefreshToken?.exp > currentTime.getTime() / 1000) {
+        const data = await UserService.refreshToken(refreshToken)
+        config.headers['token'] = `Bearer ${data?.access_token}`
+      } else {
+        dispatch(resetUser())
+      }
     }
     return config
-  }, function(error){
+  }, function (error) {
     return Promise.reject(error);
   })
 
   const handleGetDetailsUser = async (id, token) => {
     try {
+      let storageRefreshToken = localStorage.getItem('refresh_token')
+      const refreshToken = JSON.parse(storageRefreshToken)
       const res = await UserService.getDetailsUser(id, token)
-      dispatch(updateUser({ ...res?.data, access_token: token }))
+      dispatch(updateUser({ ...res?.data, access_token: token, refreshToken: refreshToken }))
     } catch (error) {
       dispatch(resetUser())
     }
   }
 
   return (
-    <div style={{height: '100vh', width: '100%'}}>
+    <div style={{ height: '100vh', width: '100%' }}>
       <Loading isLoading={isLoading}>
         <Router>
           <Routes>
@@ -64,7 +73,7 @@ function App() {
               const Page = route.page
               const ischeckAuth = !route.isPrivate || user.isAdmin
               const Layout = route.isShowHeader ? DefaultComponent : Fragment
-             
+
               return (
                 <Route key={route.path} path={ischeckAuth ? route.path : undefined} element={
                   <Layout>

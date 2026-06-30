@@ -50,9 +50,13 @@ export const updateUser = async (id, data, access_token) => {
     return res.data
 }
 
-export const refreshToken = async () => {
-    const res = await axios.post(`${process.env.REACT_APP_URL_BACKEND}/user/refresh-token`, {},
-        { withCredentials: true })
+export const refreshToken = async (refreshToken) => {
+    console.log('refreshToken', refreshToken)
+    const res = await axios.post(`${process.env.REACT_APP_URL_BACKEND}/user/refresh-token`, {}, {
+        headers: {
+            token: `Bearer ${refreshToken}`,
+        }
+    })
     return res.data
 }
 
