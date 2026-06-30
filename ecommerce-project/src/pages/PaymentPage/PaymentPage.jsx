@@ -1,6 +1,6 @@
 import { Form, Radio } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { Lable, WrapperInfo, WrapperLeft, WrapperRadio, WrapperRight, WrapperTotal } from './style';
+import { Lable, WrapperCard, WrapperInfo, WrapperLeft, WrapperRadio, WrapperRight, WrapperSummaryCard, WrapperTotal } from './style';
 
 import ButtonComponent from '../../components/ButtonComponent/ButtonComponent';
 import { useDispatch, useSelector } from 'react-redux';
@@ -52,7 +52,7 @@ const PaymentPage = () => {
         phone: user?.phone
       })
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpenModalUpdateInfo])
 
   const handleChangeAddress = () => {
@@ -75,7 +75,7 @@ const PaymentPage = () => {
       return result
     }
     return 0
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order])
 
   const diliveryPriceMemo = useMemo(() => {
@@ -86,7 +86,7 @@ const PaymentPage = () => {
     } else {
       return 20
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [priceMemo])
 
   const totalPriceMemo = useMemo(() => {
@@ -163,7 +163,7 @@ const PaymentPage = () => {
     } else if (isError) {
       message.error('Something went wrong')
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, isError])
 
   const handleCancleUpdate = () => {
@@ -232,38 +232,34 @@ const PaymentPage = () => {
   }, [])
 
   return (
-    <div style={{ padding: '0 120px', background: '#f5f5fa', height: '100vh' }}>
-      <Loading isLoading={isLoadingAddOrder}>
-        <div style={{ height: '100%', margin: '0 auto' }}>
-          <h3>Payment</h3>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <div style={{ background: '#ececec', width: '100%', minHeight: '75vh' }}>
+      <div style={{ boxSizing: 'border-box', padding: '24px 120px 40px', maxWidth: '1300px', margin: '0 auto' }}>
+        <Loading isLoading={isLoadingAddOrder}>
+          <h3 style={{ fontWeight: 700, color: '#333' }}>Payment</h3>
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'flex-start', gap: '0 24px' }}>
             <WrapperLeft>
-              <WrapperInfo>
-                <div>
-                  <Lable>Choose delivery method</Lable>
-                  <WrapperRadio onChange={handleDilivery} value={delivery}>
-                    <Radio value="fast"><span style={{ color: '#ea8500', fontWeight: 'bold' }}>FAST</span> Economy delivery</Radio>
-                    <Radio value="gojek"><span style={{ color: '#ea8500', fontWeight: 'bold' }}>GO_JEK</span> Economy delivery</Radio>
-                  </WrapperRadio>
-                </div>
-              </WrapperInfo>
-              <WrapperInfo>
-                <div>
-                  <Lable>Choose payment method</Lable>
-                  <WrapperRadio onChange={handlePayment} value={payment}>
-                    <Radio value="later_money"> Cash on delivery</Radio>
-                    <Radio value="paypal"> Pay with PayPal</Radio>
-                  </WrapperRadio>
-                </div>
-              </WrapperInfo>
+              <WrapperCard>
+                <Lable>Choose delivery method</Lable>
+                <WrapperRadio onChange={handleDilivery} value={delivery}>
+                  <Radio value="fast"><span style={{ color: '#ea8500', fontWeight: 'bold' }}>FAST</span> Economy delivery</Radio>
+                  <Radio value="gojek"><span style={{ color: '#ea8500', fontWeight: 'bold' }}>GO_JEK</span> Economy delivery</Radio>
+                </WrapperRadio>
+              </WrapperCard>
+              <WrapperCard>
+                <Lable>Choose payment method</Lable>
+                <WrapperRadio onChange={handlePayment} value={payment}>
+                  <Radio value="later_money"> Cash on delivery</Radio>
+                  <Radio value="paypal"> Pay with PayPal</Radio>
+                </WrapperRadio>
+              </WrapperCard>
             </WrapperLeft>
             <WrapperRight>
-              <div style={{ width: '100%' }}>
+              <WrapperSummaryCard>
                 <WrapperInfo>
                   <div>
                     <span>Address: </span>
                     <span style={{ fontWeight: 'bold' }}>{`${user?.address} ${user?.city}`} </span>
-                    <span onClick={handleChangeAddress} style={{ color: '#9255FD', cursor: 'pointer' }}>Change</span>
+                    <span onClick={handleChangeAddress} style={{ color: 'rgb(26, 148, 255)', cursor: 'pointer' }}>Change</span>
                   </div>
                 </WrapperInfo>
                 <WrapperInfo>
@@ -287,7 +283,7 @@ const PaymentPage = () => {
                     <span style={{ color: '#000', fontSize: '11px' }}>(TAX included if applicable)</span>
                   </span>
                 </WrapperTotal>
-              </div>
+              </WrapperSummaryCard>
               {payment === 'paypal' && paypalClientId ? (
                 <PayPalScriptProvider options={{ clientId: paypalClientId, currency: 'USD' }}>
                   <PayPalButtons
@@ -322,50 +318,61 @@ const PaymentPage = () => {
               )}
             </WrapperRight>
           </div>
-        </div>
-        <ModalComponent title="Update delivery information" open={isOpenModalUpdateInfo} onCancel={handleCancleUpdate} onOk={handleUpdateInforUser}>
-          <Loading isLoading={isPending}>
-            <Form
-              name="basic"
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 20 }}
-              // onFinish={onUpdateUser}
-              autoComplete="on"
-              form={form}
-            >
-              <Form.Item
-                label="Name"
-                name="name"
-                rules={[{ required: true, message: 'Please input your name!' }]}
+          <ModalComponent
+            title={<span style={{ fontSize: '17px', fontWeight: 700, color: '#333' }}>Update delivery information</span>}
+            open={isOpenModalUpdateInfo}
+            onCancel={handleCancleUpdate}
+            onOk={handleUpdateInforUser}
+            okText="Save changes"
+            cancelText="Cancel"
+            centered
+            width={480}
+            okButtonProps={{ style: { background: 'rgb(26, 148, 255)', borderColor: 'rgb(26, 148, 255)', fontWeight: 600 } }}
+            cancelButtonProps={{ style: { fontWeight: 500 } }}
+          >
+            <Loading isLoading={isPending}>
+              <Form
+                name="basic"
+                layout="vertical"
+                requiredMark={false}
+                style={{ marginTop: '12px' }}
+                autoComplete="on"
+                form={form}
               >
-                <InputComponent value={stateUserDetails['name']} onChange={handleOnchangeDetails} name="name" />
-              </Form.Item>
-              <Form.Item
-                label="City"
-                name="city"
-                rules={[{ required: true, message: 'Please input your city!' }]}
-              >
-                <InputComponent value={stateUserDetails['city']} onChange={handleOnchangeDetails} name="city" />
-              </Form.Item>
-              <Form.Item
-                label="Phone"
-                name="phone"
-                rules={[{ required: true, message: 'Please input your  phone!' }]}
-              >
-                <InputComponent value={stateUserDetails.phone} onChange={handleOnchangeDetails} name="phone" />
-              </Form.Item>
-
-              <Form.Item
-                label="Adress"
-                name="address"
-                rules={[{ required: true, message: 'Please input your  address!' }]}
-              >
-                <InputComponent value={stateUserDetails.address} onChange={handleOnchangeDetails} name="address" />
-              </Form.Item>
-            </Form>
-          </Loading>
-        </ModalComponent>
-      </Loading>
+                <Form.Item
+                  label={<span style={{ fontWeight: 600, color: '#333' }}>Name</span>}
+                  name="name"
+                  rules={[{ required: true, message: 'Please input your name!' }]}
+                >
+                  <InputComponent size="large" value={stateUserDetails['name']} onChange={handleOnchangeDetails} name="name" />
+                </Form.Item>
+                <Form.Item
+                  label={<span style={{ fontWeight: 600, color: '#333' }}>City</span>}
+                  name="city"
+                  rules={[{ required: true, message: 'Please input your city!' }]}
+                >
+                  <InputComponent size="large" value={stateUserDetails['city']} onChange={handleOnchangeDetails} name="city" />
+                </Form.Item>
+                <Form.Item
+                  label={<span style={{ fontWeight: 600, color: '#333' }}>Phone</span>}
+                  name="phone"
+                  rules={[{ required: true, message: 'Please input your  phone!' }]}
+                >
+                  <InputComponent size="large" value={stateUserDetails.phone} onChange={handleOnchangeDetails} name="phone" />
+                </Form.Item>
+                <Form.Item
+                  label={<span style={{ fontWeight: 600, color: '#333' }}>Address</span>}
+                  name="address"
+                  rules={[{ required: true, message: 'Please input your  address!' }]}
+                  style={{ marginBottom: 0 }}
+                >
+                  <InputComponent size="large" value={stateUserDetails.address} onChange={handleOnchangeDetails} name="address" />
+                </Form.Item>
+              </Form>
+            </Loading>
+          </ModalComponent>
+        </Loading>
+      </div>
     </div>
   )
 }

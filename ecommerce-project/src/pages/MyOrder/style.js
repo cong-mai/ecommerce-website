@@ -1,83 +1,68 @@
-import styled  from "styled-components";
-
-export const WrapperStyleHeader = styled.div`
-  background: rgb(255, 255, 255);
-  padding: 9px 16px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  span {
-    color: rgb(36, 36, 36);
-    font-weight: 400;
-    font-size: 13px;
-  }
-`
-export const WrapperStyleHeaderDilivery = styled.div`
-  background: rgb(255, 255, 255);
-  padding: 9px 16px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  span {
-    color: rgb(36, 36, 36);
-    font-weight: 400;
-    font-size: 13px;
-  };
-  margin-bottom: 4px;
-`
+import styled from "styled-components";
 
 export const WrapperContainer = styled.div`
   width: 100%;
-  background-color: #f5f5fa;
-`
-
-export const WrapperLeft = styled.div`
-  width: 910px;
+  background-color: #ececec;
+  min-height: 100vh;
 `
 
 export const WrapperListOrder = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding-top: 20px;
-`
-export const WrapperFooterItem = styled.div`
-  display: flex;
-  flex-direction : column;
-  gap: 10px;
-  border-top: 1px solid rgb(235, 235, 240);
-  width: 100%;
-  align-items:flex-end;
-  padding-top: 10px;
-`
-
-export const WrapperHeaderItem = styled.div`
-  display: flex;
-  align-items:flex-start;
-  height: 90px;
-  width: 100%;
+  gap: 16px;
+  max-width: 900px;
+  margin: 20px auto 0;
 `
 
 export const WrapperItemOrder = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 9px 16px;
+  width: 100%;
   background: #fff;
-  margin-top: 12px;
-  flex-direction: column;
-  width: 950px;
-  margin: 0 auto;
-  background: #fff;
-  border-radius: 6px;
-  box-shadow: 0 12px 12px #ccc;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
 `
 
 export const WrapperStatus = styled.div`
-  display:flex;
-  align-item:flex-start;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   width: 100%;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgb(235, 235, 240);
-  flex-direction:column;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafbfc;
+`
+
+export const WrapperStatusBadge = styled.span`
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: ${(props) => (props.$active ? 'rgb(230, 247, 233)' : 'rgb(255, 241, 240)')};
+  color: ${(props) => (props.$active ? 'rgb(56, 158, 13)' : 'rgb(255, 77, 79)')};
+`
+
+export const WrapperHeaderItem = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f5f5f5;
+
+  &:last-child {
+    border-bottom: none;
+  }
+`
+
+export const WrapperFooterItem = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-end;
+  width: 100%;
+  padding: 16px 20px;
+  border-top: 1px solid #f0f0f0;
+  background: #fafbfc;
 `

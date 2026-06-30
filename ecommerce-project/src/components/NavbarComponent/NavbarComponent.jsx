@@ -1,51 +1,47 @@
-import { Checkbox, Rate } from 'antd'
-import React from 'react'
-import { WrapperContent, WrapperLableText, WrapperTextPrice, WrapperTextValue } from './style'
+import { LaptopOutlined, MobileOutlined, TabletOutlined, AppstoreOutlined } from '@ant-design/icons'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { WrapperContent, WrapperLableText, WrapperTextValue } from './style'
+import * as ProductService from '../../services/ProductService'
+
+const CATEGORY_ICONS = {
+    laptop: <LaptopOutlined />,
+    phone: <MobileOutlined />,
+    tablet: <TabletOutlined />,
+}
+
+const getIcon = (name) => {
+    const key = name?.toLowerCase()
+    return CATEGORY_ICONS[key] || <AppstoreOutlined />
+}
 
 const NavBarComponent = () => {
-    const onChange = () => { }
-    const renderContent = (type, options) => {
-        switch (type) {
-            case 'text':
-                return options.map((option) => {
-                    return (
-                        <WrapperTextValue>{option}</WrapperTextValue>
-                    )
-                })
-            case 'checkbox':
-                return (
-                    <Checkbox.Group style={{ display: 'flex', flexDirection: 'column', gap: '12px' }} onChange={onChange}>
-                        {options.map((option) => {
-                            return (
-                                <Checkbox style={{ marginLeft: 0 }} value={option.value}>{option.label}</Checkbox>
-                            )
-                        })}
-                    </Checkbox.Group>
-                )
-            case 'star':
-                return options.map((option) => {
-                    return (
-                        <div style={{ dispaly: 'flex' }}>
-                            <Rate style={{ fontSize: '12px' }} disabled defaultValue={option} />
-                            <span> {`& ${option} up`}</span>
-                        </div>
-                    )
-                })
-            case 'price':
-                return options.map((option) => {
-                    return (
-                        <WrapperTextPrice>{option}</WrapperTextPrice>
-                    )
-                })
-            default:
-                return {}
-        }
+    const navigate = useNavigate()
+    const [typeProducts, setTypeProducts] = useState([])
+
+    useEffect(() => {
+        ProductService.getAllTypeProduct().then((res) => {
+            if (res?.status === 'OK') setTypeProducts(res.data)
+        })
+    }, [])
+
+    const handleNavigate = (type) => {
+        navigate(
+            `/product/${type.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ /g, '_')}`,
+            { state: type }
+        )
     }
+
     return (
         <div>
-            <WrapperLableText>Label</WrapperLableText>
+            <WrapperLableText>Categories</WrapperLableText>
             <WrapperContent>
-                {renderContent('text', ['Laptop', 'Phone', 'Tablet', 'Accessories'])}
+                {typeProducts.map((type) => (
+                    <WrapperTextValue key={type} onClick={() => handleNavigate(type)}>
+                        {getIcon(type)}
+                        {type}
+                    </WrapperTextValue>
+                ))}
             </WrapperContent>
         </div>
     )

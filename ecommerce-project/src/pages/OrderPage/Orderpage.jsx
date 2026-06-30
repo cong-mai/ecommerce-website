@@ -1,6 +1,6 @@
 import { Form } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { CustomCheckbox, WrapperCountOrder, WrapperInfo, WrapperItemOrder, WrapperLeft, WrapperListOrder, WrapperRight, WrapperStyleHeader, WrapperStyleHeaderDilivery, WrapperTotal } from './style';
+import { CustomCheckbox, WrapperCountOrder, WrapperInfo, WrapperItemOrder, WrapperLeft, WrapperListOrder, WrapperRight, WrapperStyleHeader, WrapperStyleHeaderDilivery, WrapperSummaryCard, WrapperTotal } from './style';
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons'
 
 import { WrapperInputNumber } from '../../components/ProductDetailsComponent/style';
@@ -73,7 +73,7 @@ const OrderPage = () => {
 
   useEffect(() => {
     dispatch(selectedOrder({ listChecked }))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listChecked])
 
   useEffect(() => {
@@ -89,7 +89,7 @@ const OrderPage = () => {
         phone: user?.phone
       })
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpenModalUpdateInfo])
 
   const handleChangeAddress = () => {
@@ -122,7 +122,7 @@ const OrderPage = () => {
     } else {
       return 20
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [priceMemo])
 
   const totalPriceMemo = useMemo(() => {
@@ -202,12 +202,12 @@ const OrderPage = () => {
     },
   ]
   return (
-    <div style={{ background: '#f5f5fa', width: '100%', height: '100vh' }}>
-      <div style={{ height: '100%', padding: '0 120px' }}>
-        <h3 style={{ fontWeight: 'bold' }}>Shopping Cart</h3>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <div style={{ background: '#ececec', width: '100%', minHeight: '80vh' }}>
+      <div style={{ boxSizing: 'border-box', padding: '16px clamp(16px, 5vw, 120px) 40px', maxWidth: '1300px', margin: '0 auto' }}>
+        <h3 style={{ fontWeight: 700, color: '#333' }}>Shopping Cart</h3>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'flex-start', gap: '0 24px' }}>
           <WrapperLeft>
-            <h4>Delivery fee</h4>
+            <h4 style={{ fontWeight: 600, color: '#555', marginBottom: '10px' }}>Delivery fee</h4>
             <WrapperStyleHeaderDilivery>
               <StepComponent items={itemsDelivery} current={diliveryPriceMemo === 10
                 ? 2 : diliveryPriceMemo === 20 ? 1
@@ -229,14 +229,16 @@ const OrderPage = () => {
               {order?.orderItems?.map((order) => {
                 return (
                   <WrapperItemOrder key={order?.product}>
-                    <div style={{ width: '390px', display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <div style={{ width: '390px', display: 'flex', alignItems: 'center', gap: 10 }}>
                       <CustomCheckbox onChange={onChange} value={order?.product} checked={listChecked.includes(order?.product)}></CustomCheckbox>
-                      <img src={order?.image} alt={order?.name} style={{ width: '77px', height: '79px', objectFit: 'cover' }} />
+                      <img src={order?.image} alt={order?.name} style={{ width: '77px', height: '79px', objectFit: 'cover', borderRadius: '6px' }} />
                       <div style={{
-                        width: 260,
+                        width: 250,
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
+                        whiteSpace: 'nowrap',
+                        fontSize: '14px',
+                        color: '#333'
                       }}>{order?.name}</div>
                     </div>
                     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -244,16 +246,16 @@ const OrderPage = () => {
                         <span style={{ fontSize: '13px', color: '#242424' }}>${order?.price}</span>
                       </span>
                       <WrapperCountOrder>
-                        <button style={{ border: 'none', background: 'transparent', cursor: 'pointer' }} onClick={() => handleChangeCount('decrease', order?.product, order?.amount === 1)}>
-                          <MinusOutlined style={{ color: '#000', fontSize: '10px' }} />
+                        <button style={{ width: '28px', height: '28px', border: 'none', background: '#f5f5f5', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => handleChangeCount('decrease', order?.product, order?.amount === 1)}>
+                          <MinusOutlined style={{ color: '#000', fontSize: '11px' }} />
                         </button>
                         <WrapperInputNumber defaultValue={order?.amount} value={order?.amount} size="small" min={1} max={order?.countInstock} />
-                        <button style={{ border: 'none', background: 'transparent', cursor: 'pointer' }} onClick={() => handleChangeCount('increase', order?.product, order?.amount === order.countInstock, order?.amount === 1)}>
-                          <PlusOutlined style={{ color: '#000', fontSize: '10px' }} />
+                        <button style={{ width: '28px', height: '28px', border: 'none', background: '#f5f5f5', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => handleChangeCount('increase', order?.product, order?.amount === order.countInstock, order?.amount === 1)}>
+                          <PlusOutlined style={{ color: '#000', fontSize: '11px' }} />
                         </button>
                       </WrapperCountOrder>
-                      <span style={{ color: 'rgb(255, 66, 78)', fontSize: '13px', fontWeight: 500 }}>${order?.price * order?.amount}</span>
-                      <DeleteOutlined style={{ cursor: 'pointer' }} onClick={() => handleDeleteOrder(order?.product)} />
+                      <span style={{ color: 'rgb(255, 66, 78)', fontSize: '14px', fontWeight: 600 }}>${order?.price * order?.amount}</span>
+                      <DeleteOutlined style={{ cursor: 'pointer', fontSize: '15px', color: '#999' }} onClick={() => handleDeleteOrder(order?.product)} />
                     </div>
                   </WrapperItemOrder>
                 )
@@ -261,45 +263,45 @@ const OrderPage = () => {
             </WrapperListOrder>
           </WrapperLeft>
           <WrapperRight>
-            <div style={{ width: '100%' }}>
+            <WrapperSummaryCard>
               <WrapperInfo>
                 <div>
-                  <span>Address: </span>
-                  <span style={{ fontWeight: 'bold' }}>{`${user?.address} ${user?.city}`} </span>
-                  <span onClick={handleChangeAddress} style={{ color: '#9255FD', cursor: 'pointer' }}>Change</span>
+                  <span style={{ color: '#888' }}>Address: </span>
+                  <span style={{ fontWeight: 600, color: '#333' }}>{`${user?.address} ${user?.city}`} </span>
+                  <span onClick={handleChangeAddress} style={{ color: 'rgb(26, 148, 255)', cursor: 'pointer', fontWeight: 500 }}>Change</span>
                 </div>
               </WrapperInfo>
               <WrapperInfo>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span>Subtotal</span>
-                  <span style={{ color: '#000', fontSize: '14px', fontWeight: 'bold' }}>${priceMemo}</span>
+                  <span style={{ color: '#666' }}>Subtotal</span>
+                  <span style={{ color: '#000', fontSize: '14px', fontWeight: 600 }}>${priceMemo}</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span>Discount</span>
-                  <span style={{ color: '#000', fontSize: '14px', fontWeight: 'bold' }}>-${priceDiscountMemo}</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px' }}>
+                  <span style={{ color: '#666' }}>Discount</span>
+                  <span style={{ color: '#000', fontSize: '14px', fontWeight: 600 }}>-${priceDiscountMemo}</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span>Delivery fee</span>
-                  <span style={{ color: '#000', fontSize: '14px', fontWeight: 'bold' }}>${diliveryPriceMemo}</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px' }}>
+                  <span style={{ color: '#666' }}>Delivery fee</span>
+                  <span style={{ color: '#000', fontSize: '14px', fontWeight: 600 }}>${diliveryPriceMemo}</span>
                 </div>
               </WrapperInfo>
               <WrapperTotal>
-                <span>Total</span>
-                <span style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ color: 'rgb(254, 56, 52)', fontSize: '24px', fontWeight: 'bold' }}>${totalPriceMemo}</span>
-                  <span style={{ color: '#000', fontSize: '11px' }}>(TAX included if applicable)</span>
+                <span style={{ fontWeight: 600, color: '#333' }}>Total</span>
+                <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                  <span style={{ color: 'rgb(255, 57, 69)', fontSize: '24px', fontWeight: 700 }}>${totalPriceMemo}</span>
+                  <span style={{ color: '#999', fontSize: '11px' }}>(TAX included if applicable)</span>
                 </span>
               </WrapperTotal>
-            </div>
+            </WrapperSummaryCard>
             <ButtonComponent
               onClick={() => handleAddCard()}
               size={40}
               styleButton={{
                 background: 'rgb(255, 57, 69)',
                 height: '48px',
-                width: '320px',
+                width: '100%',
                 border: 'none',
-                borderRadius: '4px'
+                borderRadius: '6px'
               }}
               textButton={'Buy'}
               styleTextButton={{ color: '#fff', fontSize: '15px', fontWeight: '700' }}

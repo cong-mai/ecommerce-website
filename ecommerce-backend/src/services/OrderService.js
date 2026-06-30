@@ -144,46 +144,28 @@ const getOrderDetails = (id) => {
 const cancelOrderDetails = (id, data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let order = []
-            const promises = data.map(async (order) => {
-                const productData = await Product.findOneAndUpdate(
-                    {
-                        _id: order.product,
-                        selled: { $gte: order.amount }
-                    },
+            await Promise.all(data.map(async (orderItem) => {
+                await Product.findOneAndUpdate(
+                    { _id: orderItem.product },
                     {
                         $inc: {
-                            countInStock: +order.amount,
-                            selled: -order.amount
+                            countInStock: +orderItem.amount,
+                            selled: -orderItem.amount
                         }
                     },
                     { new: true }
                 )
-                if (productData) {
-                    order = await Order.findByIdAndDelete(id)
-                    if (order === null) {
-                        resolve({
-                            status: 'ERR',
-                            message: 'The order is not defined'
-                        })
-                    }
-                } else {
-                    return {
-                        status: 'OK',
-                        message: 'ERR',
-                        id: order.product
-                    }
-                }
-            })
-            const results = await Promise.all(promises)
-            const newData = results && results[0] && results[0].id
+            }))
 
-            if (newData) {
+            const order = await Order.findByIdAndDelete(id)
+            if (order === null) {
                 resolve({
                     status: 'ERR',
-                    message: `Product with id: ${newData} does not exist`
+                    message: 'The order is not defined'
                 })
+                return
             }
+
             resolve({
                 status: 'OK',
                 message: 'success',

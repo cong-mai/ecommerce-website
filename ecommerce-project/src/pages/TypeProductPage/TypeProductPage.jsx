@@ -18,16 +18,17 @@ const TypeProductPage = () => {
     const [loading, setLoading] = useState(false)
     const [panigate, setPanigate] = useState({
         page: 0,
-        limit: 10,
+        limit: 12,
         total: 1,
     })
+
     const fetchProductType = async (type, page, limit) => {
         setLoading(true)
         const res = await ProductService.getProductType(type, page, limit)
         if (res?.status === 'OK') {
             setLoading(false)
             setProducts(res?.data)
-            setPanigate({ ...panigate, total: res?.totalPage })
+            setPanigate((prev) => ({ ...prev, total: res?.totalPage }))
         } else {
             setLoading(false)
         }
@@ -40,25 +41,37 @@ const TypeProductPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state, panigate.page, panigate.limit])
 
-
     const onChange = (current, pageSize) => {
-        setPanigate({ ...panigate, page: current - 1, limit: pageSize })
+        setPanigate((prev) => ({ ...prev, page: current - 1, limit: pageSize }))
     }
+
+    const filteredProducts = products?.filter((pro) => {
+        if (searchDebounce === '') return true
+        return pro?.name?.toLowerCase()?.includes(searchDebounce?.toLowerCase())
+    })
+
     return (
         <Loading isLoading={loading}>
-            <div style={{ padding: '0 120px', background: '#efefef', display: 'flex', flexDirection: 'column' }}>
-                <Row style={{ flexWrap: 'nowrap', paddingTop: '10px', flex: 1 }}>
-                    <WrapperNavbar span={4} >
+            <div style={{ padding: '0 120px 40px', background: '#ececec', minHeight: 'calc(100vh - 140px)' }}>
+                <Row style={{ flexWrap: 'nowrap', alignItems: 'flex-start' }}>
+                    {/* Sidebar */}
+                    <WrapperNavbar span={4}>
                         <NavBarComponent />
                     </WrapperNavbar>
-                    <Col span={20} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                        <WrapperCategoryTitle>{state}</WrapperCategoryTitle>
-                        <WrapperProducts >
-                            {products?.filter((pro) => {
-                                if (searchDebounce === '') return true
-                                return pro?.name?.toLowerCase()?.includes(searchDebounce?.toLowerCase())
-                            })?.map((product) => {
-                                return (
+
+                    {/* Main content */}
+                    <Col span={20} style={{ display: 'flex', flexDirection: 'column' }}>
+                        <WrapperCategoryTitle>
+                            {state}
+                        </WrapperCategoryTitle>
+
+                        <div style={{ background: '#fff', borderRadius: '8px', padding: '16px 20px', marginTop: '12px', boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
+                            <div style={{ fontSize: '13px', color: '#888', marginBottom: '4px' }}>
+                                {filteredProducts?.length || 0} products found
+                            </div>
+
+                            <WrapperProducts>
+                                {filteredProducts?.map((product) => (
                                     <CardComponent
                                         key={product._id}
                                         countInStock={product.countInStock}
@@ -72,13 +85,21 @@ const TypeProductPage = () => {
                                         discount={product.discount}
                                         id={product._id}
                                     />
-                                )
-                            })}
-                        </WrapperProducts>
-                        <Pagination defaultCurrent={panigate.page + 1} total={panigate?.total} onChange={onChange} style={{ textAlign: 'center', marginTop: '10px' }} />
+                                ))}
+                            </WrapperProducts>
+
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
+                                <Pagination
+                                    current={panigate.page + 1}
+                                    total={panigate?.total * panigate.limit}
+                                    pageSize={panigate.limit}
+                                    onChange={onChange}
+                                    showSizeChanger={false}
+                                />
+                            </div>
+                        </div>
                     </Col>
                 </Row>
-
             </div>
         </Loading>
     )

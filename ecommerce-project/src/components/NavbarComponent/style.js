@@ -1,31 +1,40 @@
 import styled from "styled-components";
 
 export const WrapperLableText = styled.h4`
-    color: rgb(36, 36, 36);
+    color: #fff;
     font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 12px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #f0f0f0;
+    font-weight: 700;
+    margin: 0;
+    padding: 12px 16px;
+    background: rgb(26, 148, 255);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 `
+
 export const WrapperTextValue = styled.span`
+    display: flex;
+    align-items: center;
+    gap: 8px;
     color: rgb(56, 56, 61);
     font-size: 13px;
     font-weight: 400;
     cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 9px 16px;
+    border-left: 3px solid transparent;
     transition: all 0.2s;
     &:hover {
         color: rgb(26, 148, 255);
         background: rgb(230, 244, 255);
+        border-left-color: rgb(26, 148, 255);
     }
 `
+
 export const WrapperContent = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    padding: 8px 0;
 `
+
 export const WrapperTextPrice = styled.div`
     padding: 5px 10px;
     color: rgb(56, 56, 61);

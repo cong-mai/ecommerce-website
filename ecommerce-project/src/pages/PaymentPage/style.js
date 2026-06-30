@@ -15,7 +15,9 @@ export const WrapperStyleHeader = styled.div`
 `
 
 export const WrapperLeft = styled.div`
-  width: 700px;
+  flex: 1;
+  min-width: 0;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -48,36 +50,41 @@ export const WrapperCountOrder = styled.div`
 
 export const WrapperRight = styled.div`
   width: 360px;
-  margin-left: 24px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 14px;
+  align-items: center;
   position: sticky;
   top: 20px;
-  padding: 0 8px;
+`
+
+export const WrapperCard = styled.div`
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+`
+
+export const WrapperSummaryCard = styled.div`
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
 `
 
 export const WrapperInfo = styled.div`
-  padding: 20px 10px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 18px 20px;
+  border-bottom: 1px solid #f5f5f5;
   background: #fff;
-  width: 100%;
-
-  &:first-child {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-  }
 `
 
 export const WrapperTotal = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  padding: 20px 10px;
+  padding: 18px 20px;
   background: #fff;
-  border-top: 2px solid #f0f0f0;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
 `
 
 export const Lable = styled.span`
@@ -89,7 +96,7 @@ export const Lable = styled.span`
 `
 
 export const WrapperRadio = styled(Radio.Group)`
-  margin-top: 10px;
+  margin-top: 12px;
   background: #fafafa;
   border: 1px solid #e8e8e8;
   width: 100%;
@@ -109,12 +116,4 @@ export const WrapperRadio = styled(Radio.Group)`
   .ant-radio-wrapper-checked {
     font-weight: 500;
   }
-`
-
-export const WrapperCard = styled.div`
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  padding: 20px 10px;
-  width: 100%;
 `

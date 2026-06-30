@@ -33,7 +33,7 @@ const HomePage = () => {
     }
   }
 
-  const { isPending, isFetching, data: products, isPlaceholderData } = useQuery({
+  const { isPending, isFetching, data: products } = useQuery({
     queryKey: ['products', limit, searchDebounce],
     queryFn: fetchProductAll,
     retry: 3,
@@ -47,7 +47,7 @@ const HomePage = () => {
 
   return (
     <Loading isLoading={isPending || isFetching || pending}>
-      <div style={{ width: '100%', padding: '0 120px' }}>
+      <div style={{ padding: '0 120px' }}>
         <WrapperTypeProduct>
           {typeProducts.map((item) => {
             return (
@@ -56,36 +56,43 @@ const HomePage = () => {
           })}
         </WrapperTypeProduct>
       </div>
-      <div className='body' style={{ backgroundColor: '#ececec', padding: '10px 120px' }}>
-        <div id="container" style={{ height: '1000px', width: '100%', backgroundColor: '#ffffff' }}>
+      <div style={{ backgroundColor: '#ececec', padding: '16px 120px 40px' }}>
+        <div style={{ backgroundColor: '#fff', borderRadius: '8px', padding: '16px', boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
           <SliderComponent arrImages={[slide1, slide2, slide3]} />
+        </div>
+
+        <div style={{ backgroundColor: '#fff', borderRadius: '8px', padding: '20px 16px', marginTop: '16px', boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
+          <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#333', marginBottom: '4px', borderLeft: '4px solid rgb(26,148,255)', paddingLeft: '10px' }}>
+            Featured Products
+          </h3>
           <WrapperProducts>
-            {products?.data?.map((product) => {
-              return (
-                <CardComponent
-                  key={product._id}
-                  countInStock={product.countInStock}
-                  description={product.description}
-                  image={product.image}
-                  name={product.name}
-                  price={product.price}
-                  rating={product.rating}
-                  type={product.type}
-                  selled={product.selled}
-                  discount={product.discount}
-                  id={product._id}
-                />
-              )
-            })}
+            {products?.data?.map((product) => (
+              <CardComponent
+                key={product._id}
+                countInStock={product.countInStock}
+                description={product.description}
+                image={product.image}
+                name={product.name}
+                price={product.price}
+                rating={product.rating}
+                type={product.type}
+                selled={product.selled}
+                discount={product.discount}
+                id={product._id}
+              />
+            ))}
           </WrapperProducts>
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
             <WrapperButtonMore
-              textButton={isPlaceholderData ? 'Load more' : "Load More"} type="outline" styleButton={{
-                border: `1px solid ${products?.total === products?.data?.length ? '#f5f5f5' : 'rgb(13, 92, 182)'}`, color: `${products?.total === products?.data?.length ? '#f5f5f5' : 'rgb(13, 92, 182)'}`,
+              textButton="Load More"
+              type="outline"
+              styleButton={{
+                border: `1px solid ${products?.total === products?.data?.length ? '#d9d9d9' : 'rgb(13, 92, 182)'}`,
+                color: `${products?.total === products?.data?.length ? '#d9d9d9' : 'rgb(13, 92, 182)'}`,
                 width: '240px', height: '38px', borderRadius: '4px'
               }}
               disabled={products?.total === products?.data?.length || products?.totalPage === 1}
-              styleTextButton={{ fontWeight: 500, color: products?.total === products?.data?.length && '#fff' }}
+              styleTextButton={{ fontWeight: 500 }}
               onClick={() => setLimit((prev) => prev + 6)}
             />
           </div>
