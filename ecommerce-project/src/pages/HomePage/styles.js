@@ -3,10 +3,11 @@ import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
 
 export const WrapperTypeProduct = styled.div`
     display: flex;
-    align-items: ce
+    align-items: center;
     gap: 16px;
     justify-content: flex-start;
-    height: 44px;
+    height: auto;
+    padding: 12px 0;
     overflow-x: auto;
     &::-webkit-scrollbar { display: none; }
 `

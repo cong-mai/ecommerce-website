@@ -7,7 +7,7 @@ export const WrapperHeader = styled(Row)`
     align-items: center;
     gap: 12px 16px;
     flex-wrap: nowrap;
-    padding: 10px var(--space-page-x);
+    padding: 20px var(--space-page-x);
 
     @media (max-width: 768px) {
         flex-wrap: wrap;
