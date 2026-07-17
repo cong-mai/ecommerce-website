@@ -3,13 +3,13 @@ import styled from "styled-components";
 
 export const WrapperContainer = styled.div`
     width: 100%;
-    background: #ececec;
+    background: var(--color-bg-page);
     min-height: 80vh;
 `
 
 export const WrapperCard = styled.div`
-    background: #fff;
-    border-radius: 8px;
+    background: var(--color-white);
+    border-radius: var(--radius-md);
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
     width: 100%;
     max-width: 560px;
@@ -29,8 +29,8 @@ export const WrapperAvatarSection = styled.div`
 `
 
 export const WrapperLabel = styled.label`
-    color: #333;
-    font-size: 13px;
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -49,6 +49,11 @@ export const WrapperInput = styled.div`
 
     &:last-child {
         border-bottom: none;
+    }
+
+    @media (max-width: 480px) {
+        flex-wrap: wrap;
+        padding: 14px 16px;
     }
 `
 

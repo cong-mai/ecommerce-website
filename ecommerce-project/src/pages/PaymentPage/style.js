@@ -2,15 +2,15 @@ import { Radio } from "antd";
 import styled from "styled-components";
 
 export const WrapperStyleHeader = styled.div`
-  background: #fff;
+  background: var(--color-white);
   padding: 9px 16px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   span {
-    color: rgb(36, 36, 36);
+    color: var(--color-text);
     font-weight: 400;
-    font-size: 13px;
+    font-size: var(--font-size-sm);
   }
 `
 
@@ -29,13 +29,13 @@ export const WrapperItemOrder = styled.div`
   display: flex;
   align-items: center;
   padding: 9px 16px;
-  background: #fff;
+  background: var(--color-white);
   margin-top: 12px;
 `
 
 export const WrapperPriceDiscount = styled.span`
-  color: #999;
-  font-size: 12px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
   text-decoration: line-through;
   margin-left: 4px;
 `
@@ -45,11 +45,12 @@ export const WrapperCountOrder = styled.div`
   align-items: center;
   width: 84px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 `
 
 export const WrapperRight = styled.div`
   width: 360px;
+  max-width: 100%;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -60,15 +61,15 @@ export const WrapperRight = styled.div`
 `
 
 export const WrapperCard = styled.div`
-  background: #fff;
-  border-radius: 8px;
+  background: var(--color-white);
+  border-radius: var(--radius-md);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   padding: 20px;
 `
 
 export const WrapperSummaryCard = styled.div`
   width: 100%;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 `
@@ -76,7 +77,7 @@ export const WrapperSummaryCard = styled.div`
 export const WrapperInfo = styled.div`
   padding: 18px 20px;
   border-bottom: 1px solid #f5f5f5;
-  background: #fff;
+  background: var(--color-white);
 `
 
 export const WrapperTotal = styled.div`
@@ -84,12 +85,12 @@ export const WrapperTotal = styled.div`
   align-items: flex-start;
   justify-content: space-between;
   padding: 18px 20px;
-  background: #fff;
+  background: var(--color-white);
 `
 
 export const Lable = styled.span`
-  font-size: 13px;
-  color: #333;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -100,7 +101,7 @@ export const WrapperRadio = styled(Radio.Group)`
   background: #fafafa;
   border: 1px solid #e8e8e8;
   width: 100%;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 12px 16px;
   font-weight: normal;
   display: flex;
@@ -109,8 +110,8 @@ export const WrapperRadio = styled(Radio.Group)`
   justify-content: center;
 
   .ant-radio-wrapper {
-    font-size: 14px;
-    color: #333;
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
   }
 
   .ant-radio-wrapper-checked {

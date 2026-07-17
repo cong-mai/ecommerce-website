@@ -7,9 +7,9 @@ export const WrapperCardStyle = styled(Card)`
     display: flex;
     flex-direction: column;
     position: relative;
-    background-color: ${props => props.disabled ? '#ccc' : '#fff'};
+    background-color: ${props => props.disabled ? '#ccc' : 'var(--color-white)'};
     cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     overflow: hidden;
     transition: box-shadow 0.2s;
 
@@ -33,9 +33,9 @@ export const WrapperCardStyle = styled(Card)`
 
 export const StyleNameProduct = styled.div`
     font-weight: 500;
-    font-size: 13px;
+    font-size: var(--font-size-sm);
     line-height: 18px;
-    color: rgb(36, 36, 36);
+    color: var(--color-text);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -44,8 +44,8 @@ export const StyleNameProduct = styled.div`
 `
 
 export const WrapperReportText = styled.div`
-    font-size: 12px;
-    color: rgb(128, 128, 137);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
     display: flex;
     align-items: center;
     margin: 6px 0 4px;
@@ -53,8 +53,8 @@ export const WrapperReportText = styled.div`
 `
 
 export const WrapperPriceText = styled.div`
-    color: rgb(255, 66, 78);
-    font-size: 15px;
+    color: var(--color-danger);
+    font-size: var(--font-size-sm);
     font-weight: 600;
     margin-top: auto;
     display: flex;
@@ -63,13 +63,13 @@ export const WrapperPriceText = styled.div`
 `
 
 export const WrapperDiscountText = styled.span`
-    color: rgb(150, 150, 150);
-    font-size: 12px;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
     font-weight: 400;
 `
 
 export const WrapperStyleTextSell = styled.span`
-    font-size: 12px;
+    font-size: var(--font-size-xs);
     line-height: 20px;
-    color: rgb(120, 120, 120);
+    color: var(--color-text-muted);
 `

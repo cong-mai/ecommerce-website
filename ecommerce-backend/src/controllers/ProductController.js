@@ -114,6 +114,24 @@ const getAllType = async (req, res) => {
     }
 }
 
+const searchProduct = async (req, res) => {
+    try {
+        const { q, limit } = req.query
+        if (!q || q.trim().length < 2) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The search query must be at least 2 characters'
+            })
+        }
+        const response = await ProductService.searchProductSemantic(q, Number(limit) || 10)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
 module.exports = {
     createProduct,
     updateProduct,
@@ -121,5 +139,6 @@ module.exports = {
     deleteProduct,
     getAllProduct,
     deleteMany,
-    getAllType
+    getAllType,
+    searchProduct
 }

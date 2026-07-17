@@ -86,21 +86,21 @@ const ProfilePage = () => {
             styleButton={{
                 height: '32px',
                 width: 'fit-content',
-                background: '#fff',
-                border: '1px solid rgb(26, 148, 255)',
-                borderRadius: '6px',
+                background: 'var(--color-white)',
+                border: '1px solid var(--color-primary)',
+                borderRadius: 'var(--radius-sm)',
                 padding: '0 14px',
                 flexShrink: 0
             }}
             textButton={'Update'}
-            styleTextButton={{ color: 'rgb(26, 148, 255)', fontSize: '13px', fontWeight: '600' }}
+            styleTextButton={{ color: 'var(--color-primary)', fontSize: 'var(--font-size-sm)', fontWeight: '600' }}
         ></ButtonComponent>
     )
 
     return (
         <WrapperContainer>
-            <div style={{ boxSizing: 'border-box', padding: '24px 120px 24px', maxWidth: '1300px', margin: '0 auto' }}>
-                <h3 style={{ fontWeight: 700, color: '#333' }}>User Profile</h3>
+            <div style={{ boxSizing: 'border-box', padding: '24px var(--space-page-x) 24px', maxWidth: '1300px', margin: '0 auto' }}>
+                <h3 style={{ fontWeight: 700, color: 'var(--color-text)' }}>User Profile</h3>
                 <Loading isLoading={isPending}>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <WrapperCard>
@@ -111,7 +111,7 @@ const ProfilePage = () => {
                                         width: '88px',
                                         borderRadius: '50%',
                                         objectFit: 'cover',
-                                        border: '3px solid #fff',
+                                        border: '3px solid var(--color-white)',
                                         boxShadow: '0 1px 4px rgba(0, 0, 0, 0.15)'
                                     }} alt="avatar" />
                                 ) : (

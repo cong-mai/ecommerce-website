@@ -1,4 +1,4 @@
-import { Col, Row, Image, Rate, message } from "antd";
+import { Row, Image, Rate, message } from "antd";
 import React, { useEffect, useState } from "react";
 import imageProductSmall from '../../assets/images/imagesmall.webp';
 import {
@@ -6,7 +6,8 @@ import {
      WrapperStyleTextSell, WrapperPriceProduct, WrapperPriceTextProduct,
      WrapperPriceDiscount, WrapperDiscountBadge,
      WrapperQualityProduct, WrapperInputNumber,
-     WrapperCountButton, WrapperStockInfo
+     WrapperCountButton, WrapperStockInfo,
+     WrapperImageCol, WrapperInfoCol
 } from './style'
 import { MinusOutlined, PlusOutlined, ShoppingCartOutlined, ThunderboltOutlined } from '@ant-design/icons'
 import ButtonComponent from '../ButtonComponent/ButtonComponent'
@@ -107,11 +108,11 @@ const ProductDetailsComponent = ({ idProduct }) => {
 
      return (
           <Loading isLoading={isPending}>
-               <div style={{ background: '#fff', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
+               <div style={{ background: 'var(--color-white)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
                     <Row>
                          {/* Left: Images */}
-                         <Col span={10} style={{ borderRight: '1px solid #f0f0f0', padding: '24px 16px' }}>
-                              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px', background: '#fafafa', borderRadius: '8px', padding: '16px' }}>
+                         <WrapperImageCol xs={24} md={10}>
+                              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px', background: '#fafafa', borderRadius: 'var(--radius-md)', padding: '16px' }}>
                                    <Image
                                         src={productDetails?.image}
                                         alt={productDetails?.name}
@@ -130,16 +131,16 @@ const ProductDetailsComponent = ({ idProduct }) => {
                                         </WrapperStyleColImage>
                                    ))}
                               </Row>
-                         </Col>
+                         </WrapperImageCol>
 
                          {/* Right: Info */}
-                         <Col span={14} style={{ padding: '24px 28px' }}>
+                         <WrapperInfoCol xs={24} md={14}>
                               {/* Name */}
                               <WrapperStyleNameProduct>{productDetails?.name}</WrapperStyleNameProduct>
 
                               {/* Rating */}
                               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                                   <Rate allowHalf value={productDetails?.rating} disabled style={{ fontSize: '16px' }} />
+                                   <Rate allowHalf value={productDetails?.rating} disabled style={{ fontSize: 'var(--font-size-base)' }} />
                                    <WrapperStyleTextSell>({productDetails?.rating}) | 500+ bought in past month</WrapperStyleTextSell>
                               </div>
 
@@ -165,7 +166,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
 
                               {/* Quantity */}
                               <div style={{ margin: '16px 0', padding: '16px 0', borderTop: '1px solid #f0f0f0', borderBottom: '1px solid #f0f0f0' }}>
-                                   <div style={{ fontSize: '14px', fontWeight: 600, color: '#555', marginBottom: '10px' }}>Quantity</div>
+                                   <div style={{ fontSize: 'var(--font-size-sm)', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '10px' }}>Quantity</div>
                                    <WrapperQualityProduct>
                                         <WrapperCountButton
                                              onClick={() => handleChangeCount('decrease', numProduct === 1)}
@@ -189,22 +190,23 @@ const ProductDetailsComponent = ({ idProduct }) => {
                                         </WrapperCountButton>
                                    </WrapperQualityProduct>
                                    {errorLimitOrder && (
-                                        <div style={{ color: 'rgb(255, 57, 69)', fontSize: '13px', marginTop: '6px' }}>
+                                        <div style={{ color: 'var(--color-danger)', fontSize: 'var(--font-size-sm)', marginTop: '6px' }}>
                                              ⚠ Product is out of stock or limit reached
                                         </div>
                                    )}
                               </div>
 
                               {/* Buttons */}
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                                    <ButtonComponent
                                         size={40}
                                         styleButton={{
-                                             background: 'rgb(255, 57, 69)',
+                                             background: 'var(--color-danger)',
                                              height: '48px',
-                                             width: '200px',
+                                             flex: '1 1 150px',
+                                             maxWidth: '200px',
                                              border: 'none',
-                                             borderRadius: '6px',
+                                             borderRadius: 'var(--radius-sm)',
                                              display: 'flex',
                                              alignItems: 'center',
                                              justifyContent: 'center',
@@ -212,40 +214,41 @@ const ProductDetailsComponent = ({ idProduct }) => {
                                         }}
                                         onClick={handleAddOrderProduct}
                                         textButton={'Buy now'}
-                                        styleTextButton={{ color: '#fff', fontSize: '15px', fontWeight: '700' }}
+                                        styleTextButton={{ color: 'var(--color-white)', fontSize: 'var(--font-size-sm)', fontWeight: '700' }}
                                    />
                                    <ButtonComponent
                                         size={40}
                                         styleButton={{
-                                             background: '#fff',
+                                             background: 'var(--color-white)',
                                              height: '48px',
-                                             width: '200px',
-                                             border: '1px solid rgb(26, 148, 255)',
-                                             borderRadius: '6px',
+                                             flex: '1 1 150px',
+                                             maxWidth: '200px',
+                                             border: '1px solid var(--color-primary)',
+                                             borderRadius: 'var(--radius-sm)',
                                         }}
                                         onClick={handleAddOrderProduct}
                                         textButton={'Add to cart'}
-                                        styleTextButton={{ color: 'rgb(26, 148, 255)', fontSize: '15px', fontWeight: '600' }}
+                                        styleTextButton={{ color: 'var(--color-primary)', fontSize: 'var(--font-size-sm)', fontWeight: '600' }}
                                    />
                               </div>
 
                               {/* Sold */}
-                              <div style={{ marginTop: '16px', fontSize: '13px', color: '#888' }}>
+                              <div style={{ marginTop: '16px', fontSize: 'var(--font-size-sm)', color: 'var(--color-text-muted)' }}>
                                    <ShoppingCartOutlined style={{ marginRight: 4 }} />
                                    {productDetails?.selled || 0}+ sold
                                    <ThunderboltOutlined style={{ marginLeft: 12, marginRight: 4, color: '#faad14' }} />
                                    Fast delivery available
                               </div>
-                         </Col>
+                         </WrapperInfoCol>
                     </Row>
 
                     {/* Description */}
                     {productDetails?.description && (
-                         <div style={{ borderTop: '1px solid #f0f0f0', padding: '24px 28px' }}>
-                              <div style={{ fontSize: '16px', fontWeight: 700, color: '#333', marginBottom: '12px' }}>
+                         <div style={{ borderTop: '1px solid #f0f0f0', padding: '24px var(--space-4)' }}>
+                              <div style={{ fontSize: 'var(--font-size-base)', fontWeight: 700, color: 'var(--color-text)', marginBottom: '12px' }}>
                                    Product Description
                               </div>
-                              <div style={{ fontSize: '14px', lineHeight: '24px', color: '#555', whiteSpace: 'pre-wrap' }}>
+                              <div style={{ fontSize: 'var(--font-size-sm)', lineHeight: '24px', color: 'var(--color-text-secondary)', whiteSpace: 'pre-wrap' }}>
                                    {productDetails.description}
                               </div>
                          </div>

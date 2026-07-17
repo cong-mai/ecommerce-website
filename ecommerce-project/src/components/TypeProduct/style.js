@@ -6,6 +6,6 @@ export const WrapperType = styled.div`
   &:hover {
     background-color: var(--primary-color);
     color: #f91313;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
   }
 `

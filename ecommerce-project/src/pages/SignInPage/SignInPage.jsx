@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
 import ButtonComponent from '../../components/ButtonComponent/ButtonComponent'
 import InputForm from '../../components/inputForm/inputForm'
-import { WrapperContainerLeft, WrapperContainerRight, WrapperTextLight } from './style'
-import imageLogo from '../../assets/images/logo-login.png'
-import { Image } from 'antd'
-import { EyeFilled, EyeInvisibleFilled } from '@ant-design/icons'
+import { WrapperContainerLeft, WrapperContainerRight, WrapperTextLight, WrapperContainerLogin, WrapperCard } from './style'
+import LogoMark from '../../components/LogoMark/LogoMark'
+import { EyeFilled, EyeInvisibleFilled, ShoppingOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import * as UserService from '../../services/UserService'
@@ -74,8 +73,8 @@ const SignInPage = () => {
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0, 0, 0, 0.53)', height: '100vh' }}>
-      <div style={{ width: '800px', height: '445px', borderRadius: '6px', background: '#fff', display: 'flex' }}>
+    <WrapperContainerLogin>
+      <WrapperCard>
         <WrapperContainerLeft>
           <h1>Hello</h1>
           <p>Sign in and Create an account</p>
@@ -111,26 +110,29 @@ const SignInPage = () => {
               onClick={handleSignIn}
               size={40}
               styleButton={{
-                background: 'rgb(255, 57, 69)',
+                background: 'var(--color-danger)',
                 height: '48px',
                 width: '100%',
                 border: 'none',
-                borderRadius: '4px',
+                borderRadius: 'var(--radius-sm)',
                 margin: '26px 0 10px'
               }}
               textButton={'Sign in'}
-              styleTextButton={{ color: '#fff', fontSize: '15px', fontWeight: '700' }}
+              styleTextButton={{ color: 'var(--color-white)', fontSize: 'var(--font-size-sm)', fontWeight: '700' }}
             ></ButtonComponent>
           </Loading>
           <p><WrapperTextLight>Fogort Password ?</WrapperTextLight></p>
           <p>Do you have an account? <WrapperTextLight onClick={handleNavigateSignUp}> Sign up</WrapperTextLight></p>
         </WrapperContainerLeft>
         <WrapperContainerRight>
-          <Image src={imageLogo} preview={false} alt="image-logo" height="203px" width="203px" />
-          <h4>Shopping CMai</h4>
+          <LogoMark size="lg" variant="onLight" layout="column" />
+          <ShoppingOutlined style={{ fontSize: '40px', color: 'var(--color-primary)', marginTop: '18px' }} />
+          <p style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-sm)', marginTop: '10px', textAlign: 'center', padding: '0 24px' }}>
+            Shop electronics, phones and more.
+          </p>
         </WrapperContainerRight>
-      </div>
-    </div >
+      </WrapperCard>
+    </WrapperContainerLogin>
   )
 }
 

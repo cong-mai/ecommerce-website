@@ -52,21 +52,21 @@ const TypeProductPage = () => {
 
     return (
         <Loading isLoading={loading}>
-            <div style={{ padding: '0 120px 40px', background: '#ececec', minHeight: 'calc(100vh - 140px)' }}>
-                <Row style={{ flexWrap: 'nowrap', alignItems: 'flex-start' }}>
+            <div style={{ padding: '0 var(--space-page-x) 40px', background: 'var(--color-bg-page)', minHeight: 'calc(100vh - 140px)' }}>
+                <Row style={{ alignItems: 'flex-start' }}>
                     {/* Sidebar */}
-                    <WrapperNavbar span={4}>
+                    <WrapperNavbar xs={24} md={4}>
                         <NavBarComponent />
                     </WrapperNavbar>
 
                     {/* Main content */}
-                    <Col span={20} style={{ display: 'flex', flexDirection: 'column' }}>
+                    <Col xs={24} md={20} style={{ display: 'flex', flexDirection: 'column' }}>
                         <WrapperCategoryTitle>
                             {state}
                         </WrapperCategoryTitle>
 
-                        <div style={{ background: '#fff', borderRadius: '8px', padding: '16px 20px', marginTop: '12px', boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
-                            <div style={{ fontSize: '13px', color: '#888', marginBottom: '4px' }}>
+                        <div style={{ background: 'var(--color-white)', borderRadius: 'var(--radius-md)', padding: '16px 20px', marginTop: '12px', boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
+                            <div style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-muted)', marginBottom: '4px' }}>
                                 {filteredProducts?.length || 0} products found
                             </div>
 

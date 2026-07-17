@@ -111,9 +111,9 @@ const AdminUser = () => {
     const renderAction = () => {
         return (
             <div>
-                <DeleteOutlined style={{ color: 'red', cursor: 'pointer', fontSize: '30px' }}
+                <DeleteOutlined style={{ color: 'red', cursor: 'pointer', fontSize: 'var(--font-size-2xl)' }}
                     onClick={() => setIsModalOpenDelete(true)} />
-                <EditOutlined style={{ color: 'orange', cursor: 'pointer', fontSize: '30px', marginLeft: '8px' }}
+                <EditOutlined style={{ color: 'orange', cursor: 'pointer', fontSize: 'var(--font-size-2xl)', marginLeft: '8px' }}
                     onClick={handleDetailsProduct}
                 />
             </div>
@@ -183,7 +183,7 @@ const AdminUser = () => {
         filterIcon: (filtered) => (
             <SearchOutlined
                 style={{
-                    color: filtered ? '#1890ff' : undefined,
+                    color: filtered ? 'var(--color-primary-hover)' : undefined,
                 }}
             />
         ),

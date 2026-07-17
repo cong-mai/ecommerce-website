@@ -74,7 +74,7 @@ const MyOrderPage = () => {
             width: '64px',
             height: '64px',
             objectFit: 'cover',
-            borderRadius: '6px',
+            borderRadius: 'var(--radius-sm)',
             border: '1px solid rgb(238, 238, 238)',
             flexShrink: 0
           }}
@@ -86,11 +86,11 @@ const MyOrderPage = () => {
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
           marginLeft: '14px',
-          fontSize: '14px',
-          color: '#333',
+          fontSize: 'var(--font-size-sm)',
+          color: 'var(--color-text)',
           fontWeight: 500
         }}>{order?.name}</div>
-        <span style={{ fontSize: '14px', color: '#242424', fontWeight: 600, marginLeft: '16px', flexShrink: 0 }}>${order?.price}</span>
+        <span style={{ fontSize: 'var(--font-size-sm)', color: '#242424', fontWeight: 600, marginLeft: '16px', flexShrink: 0 }}>${order?.price}</span>
       </WrapperHeaderItem>
     })
   }
@@ -98,10 +98,10 @@ const MyOrderPage = () => {
   return (
     <Loading isLoading={isPending || isLoadingCancel}>
       <WrapperContainer>
-        <div style={{ boxSizing: 'border-box', padding: '24px 120px 40px', margin: '0 auto' }}>
-          <h2 style={{ fontWeight: 700, color: '#333' }}>My Orders</h2>
+        <div style={{ boxSizing: 'border-box', padding: '24px var(--space-page-x) 40px', margin: '0 auto' }}>
+          <h2 style={{ fontWeight: 700, color: 'var(--color-text)' }}>My Orders</h2>
           {!isPending && !data?.length && (
-            <div style={{ textAlign: 'center', color: '#888', fontSize: '14px', marginTop: '40px' }}>
+            <div style={{ textAlign: 'center', color: 'var(--color-text-muted)', fontSize: 'var(--font-size-sm)', marginTop: '40px' }}>
               You have no orders yet.
             </div>
           )}
@@ -110,7 +110,7 @@ const MyOrderPage = () => {
               return (
                 <WrapperItemOrder key={order?._id}>
                   <WrapperStatus>
-                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#333' }}>Status</span>
+                    <span style={{ fontSize: 'var(--font-size-sm)', fontWeight: 700, color: 'var(--color-text)' }}>Status</span>
                     <WrapperStatusBadge $active={order.isDelivered}>
                       {order.isDelivered ? 'Delivered' : 'Not delivered'}
                     </WrapperStatusBadge>
@@ -121,9 +121,9 @@ const MyOrderPage = () => {
                   {renderProduct(order?.orderItems)}
                   <WrapperFooterItem>
                     <div>
-                      <span style={{ color: '#666', fontSize: '13px' }}>Total: </span>
+                      <span style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-sm)' }}>Total: </span>
                       <span
-                        style={{ fontSize: '18px', color: 'rgb(254, 56, 52)', fontWeight: 700 }}
+                        style={{ fontSize: 'var(--font-size-md)', color: 'var(--color-danger)', fontWeight: 700 }}
                       >${order?.totalPrice}</span>
                     </div>
                     <div style={{ display: 'flex', gap: '10px' }}>
@@ -132,12 +132,12 @@ const MyOrderPage = () => {
                         size={40}
                         styleButton={{
                           height: '36px',
-                          background: '#fff',
+                          background: 'var(--color-white)',
                           border: '1px solid rgb(255, 77, 79)',
-                          borderRadius: '6px'
+                          borderRadius: 'var(--radius-sm)'
                         }}
                         textButton={'Cancel order'}
-                        styleTextButton={{ color: 'rgb(255, 77, 79)', fontSize: '14px', fontWeight: 500 }}
+                        styleTextButton={{ color: 'rgb(255, 77, 79)', fontSize: 'var(--font-size-sm)', fontWeight: 500 }}
                       >
                       </ButtonComponent>
                       <ButtonComponent
@@ -145,12 +145,12 @@ const MyOrderPage = () => {
                         size={40}
                         styleButton={{
                           height: '36px',
-                          background: 'rgb(26, 148, 255)',
+                          background: 'var(--color-primary)',
                           border: 'none',
-                          borderRadius: '6px'
+                          borderRadius: 'var(--radius-sm)'
                         }}
                         textButton={'View details'}
-                        styleTextButton={{ color: '#fff', fontSize: '14px', fontWeight: 600 }}
+                        styleTextButton={{ color: 'var(--color-white)', fontSize: 'var(--font-size-sm)', fontWeight: 600 }}
                       >
                       </ButtonComponent>
                     </div>

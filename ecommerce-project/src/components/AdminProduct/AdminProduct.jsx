@@ -166,9 +166,9 @@ const AdminProduct = () => {
     const renderAction = () => {
         return (
             <div>
-                <DeleteOutlined style={{ color: 'red', cursor: 'pointer', fontSize: '30px' }}
+                <DeleteOutlined style={{ color: 'red', cursor: 'pointer', fontSize: 'var(--font-size-2xl)' }}
                     onClick={() => setIsModalOpenDelete(true)} />
-                <EditOutlined style={{ color: 'orange', cursor: 'pointer', fontSize: '30px', marginLeft: '8px' }}
+                <EditOutlined style={{ color: 'orange', cursor: 'pointer', fontSize: 'var(--font-size-2xl)', marginLeft: '8px' }}
                     onClick={handleDetailsProduct}
                 />
             </div>
@@ -241,7 +241,7 @@ const AdminProduct = () => {
         filterIcon: (filtered) => (
             <SearchOutlined
                 style={{
-                    color: filtered ? '#1890ff' : undefined,
+                    color: filtered ? 'var(--color-primary-hover)' : undefined,
                 }}
             />
         ),
@@ -464,9 +464,9 @@ const AdminProduct = () => {
         <div>
             <WrapperHeader>Manage Products</WrapperHeader>
             <div style={{ marginTop: '10px' }}>
-                <Button style={{ height: '150px', width: '150px', borderRadius: '6px', borderStyle: 'dashed' }}
+                <Button style={{ height: '150px', width: '150px', borderRadius: 'var(--radius-sm)', borderStyle: 'dashed' }}
                     onClick={() => setIsModelOpen(true)}>
-                    <PlusOutlined style={{ fontSize: '40px' }} />
+                    <PlusOutlined style={{ fontSize: 'var(--font-size-3xl)' }} />
                 </Button>
             </div>
             <div style={{ marginTop: '20px' }}>

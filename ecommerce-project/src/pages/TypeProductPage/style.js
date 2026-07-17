@@ -16,27 +16,31 @@ export const WrapperProducts = styled.div`
 `
 
 export const WrapperNavbar = styled(Col)`
-    background: #fff;
+    background: var(--color-white);
     margin-right: 16px;
     padding: 0;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     height: fit-content;
     margin-top: 16px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     overflow: hidden;
+
+    @media (max-width: 768px) {
+        margin-right: 0;
+    }
 `
 
 export const WrapperCategoryTitle = styled.div`
-    background: #fff;
-    border-radius: 8px;
+    background: var(--color-white);
+    border-radius: var(--radius-md);
     padding: 14px 20px;
     margin-top: 16px;
-    font-size: 17px;
+    font-size: var(--font-size-md);
     font-weight: 700;
-    color: rgb(36, 36, 36);
+    color: var(--color-text);
     text-transform: capitalize;
     box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    border-left: 4px solid rgb(26, 148, 255);
+    border-left: 4px solid var(--color-primary);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -45,7 +49,7 @@ export const WrapperCategoryTitle = styled.div`
         display: inline-block;
         width: 4px;
         height: 18px;
-        background: rgb(26, 148, 255);
+        background: var(--color-primary);
         border-radius: 2px;
         margin-right: 4px;
     }

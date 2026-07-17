@@ -11,6 +11,11 @@ export const getAllProduct = async (search, limit) => {
     return res.data
 }
 
+export const searchSemantic = async (query, limit) => {
+    const res = await axios.get(`${process.env.REACT_APP_URL_BACKEND}/product/search?q=${encodeURIComponent(query)}&limit=${limit}`)
+    return res.data
+}
+
 export const getProductType = async (type, page, limit) => {
     if (type) {
         const res = await axios.get(`${process.env.REACT_APP_URL_BACKEND}/product/get-all?filter=type&filter=${type}&limit=${limit}&page=${page}`)

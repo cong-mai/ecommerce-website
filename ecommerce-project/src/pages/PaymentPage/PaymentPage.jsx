@@ -232,10 +232,10 @@ const PaymentPage = () => {
   }, [])
 
   return (
-    <div style={{ background: '#ececec', width: '100%', minHeight: '75vh' }}>
-      <div style={{ boxSizing: 'border-box', padding: '24px 120px 40px', maxWidth: '1300px', margin: '0 auto' }}>
+    <div style={{ background: 'var(--color-bg-page)', width: '100%', minHeight: '75vh' }}>
+      <div style={{ boxSizing: 'border-box', padding: '24px var(--space-page-x) 40px', maxWidth: '1300px', margin: '0 auto' }}>
         <Loading isLoading={isLoadingAddOrder}>
-          <h3 style={{ fontWeight: 700, color: '#333' }}>Payment</h3>
+          <h3 style={{ fontWeight: 700, color: 'var(--color-text)' }}>Payment</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'flex-start', gap: '0 24px' }}>
             <WrapperLeft>
               <WrapperCard>
@@ -259,28 +259,28 @@ const PaymentPage = () => {
                   <div>
                     <span>Address: </span>
                     <span style={{ fontWeight: 'bold' }}>{`${user?.address} ${user?.city}`} </span>
-                    <span onClick={handleChangeAddress} style={{ color: 'rgb(26, 148, 255)', cursor: 'pointer' }}>Change</span>
+                    <span onClick={handleChangeAddress} style={{ color: 'var(--color-primary)', cursor: 'pointer' }}>Change</span>
                   </div>
                 </WrapperInfo>
                 <WrapperInfo>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span>Subtotal</span>
-                    <span style={{ color: '#000', fontSize: '14px', fontWeight: 'bold' }}>${priceMemo}</span>
+                    <span style={{ color: 'var(--color-black)', fontSize: 'var(--font-size-sm)', fontWeight: 'bold' }}>${priceMemo}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span>Discount</span>
-                    <span style={{ color: '#000', fontSize: '14px', fontWeight: 'bold' }}>-${priceDiscountMemo}</span>
+                    <span style={{ color: 'var(--color-black)', fontSize: 'var(--font-size-sm)', fontWeight: 'bold' }}>-${priceDiscountMemo}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span>Delivery fee</span>
-                    <span style={{ color: '#000', fontSize: '14px', fontWeight: 'bold' }}>${diliveryPriceMemo}</span>
+                    <span style={{ color: 'var(--color-black)', fontSize: 'var(--font-size-sm)', fontWeight: 'bold' }}>${diliveryPriceMemo}</span>
                   </div>
                 </WrapperInfo>
                 <WrapperTotal>
                   <span>Total</span>
                   <span style={{ display: 'flex', flexDirection: 'column' }}>
-                    <span style={{ color: 'rgb(254, 56, 52)', fontSize: '24px', fontWeight: 'bold' }}>${totalPriceMemo}</span>
-                    <span style={{ color: '#000', fontSize: '11px' }}>(TAX included if applicable)</span>
+                    <span style={{ color: 'var(--color-danger)', fontSize: 'var(--font-size-xl)', fontWeight: 'bold' }}>${totalPriceMemo}</span>
+                    <span style={{ color: 'var(--color-black)', fontSize: 'var(--font-size-xs)' }}>(TAX included if applicable)</span>
                   </span>
                 </WrapperTotal>
               </WrapperSummaryCard>
@@ -300,26 +300,26 @@ const PaymentPage = () => {
                   />
                 </PayPalScriptProvider>
               ) : payment === 'paypal' && !paypalClientId ? (
-                <div style={{ color: '#999', fontSize: '13px', marginTop: '8px' }}>Loading PayPal...</div>
+                <div style={{ color: 'var(--color-text-muted)', fontSize: 'var(--font-size-sm)', marginTop: '8px' }}>Loading PayPal...</div>
               ) : (
                 <ButtonComponent
                   onClick={() => handleAddOrder()}
                   size={40}
                   styleButton={{
-                    background: 'rgb(255, 57, 69)',
+                    background: 'var(--color-danger)',
                     height: '48px',
-                    width: '320px',
+                    width: '100%',
                     border: 'none',
-                    borderRadius: '4px'
+                    borderRadius: 'var(--radius-sm)'
                   }}
                   textButton={'Place Order'}
-                  styleTextButton={{ color: '#fff', fontSize: '15px', fontWeight: '700' }}
+                  styleTextButton={{ color: 'var(--color-white)', fontSize: 'var(--font-size-sm)', fontWeight: '700' }}
                 ></ButtonComponent>
               )}
             </WrapperRight>
           </div>
           <ModalComponent
-            title={<span style={{ fontSize: '17px', fontWeight: 700, color: '#333' }}>Update delivery information</span>}
+            title={<span style={{ fontSize: 'var(--font-size-md)', fontWeight: 700, color: 'var(--color-text)' }}>Update delivery information</span>}
             open={isOpenModalUpdateInfo}
             onCancel={handleCancleUpdate}
             onOk={handleUpdateInforUser}
@@ -327,7 +327,7 @@ const PaymentPage = () => {
             cancelText="Cancel"
             centered
             width={480}
-            okButtonProps={{ style: { background: 'rgb(26, 148, 255)', borderColor: 'rgb(26, 148, 255)', fontWeight: 600 } }}
+            okButtonProps={{ style: { background: 'var(--color-primary)', borderColor: 'var(--color-primary)', fontWeight: 600 } }}
             cancelButtonProps={{ style: { fontWeight: 500 } }}
           >
             <Loading isLoading={isPending}>
@@ -340,28 +340,28 @@ const PaymentPage = () => {
                 form={form}
               >
                 <Form.Item
-                  label={<span style={{ fontWeight: 600, color: '#333' }}>Name</span>}
+                  label={<span style={{ fontWeight: 600, color: 'var(--color-text)' }}>Name</span>}
                   name="name"
                   rules={[{ required: true, message: 'Please input your name!' }]}
                 >
                   <InputComponent size="large" value={stateUserDetails['name']} onChange={handleOnchangeDetails} name="name" />
                 </Form.Item>
                 <Form.Item
-                  label={<span style={{ fontWeight: 600, color: '#333' }}>City</span>}
+                  label={<span style={{ fontWeight: 600, color: 'var(--color-text)' }}>City</span>}
                   name="city"
                   rules={[{ required: true, message: 'Please input your city!' }]}
                 >
                   <InputComponent size="large" value={stateUserDetails['city']} onChange={handleOnchangeDetails} name="city" />
                 </Form.Item>
                 <Form.Item
-                  label={<span style={{ fontWeight: 600, color: '#333' }}>Phone</span>}
+                  label={<span style={{ fontWeight: 600, color: 'var(--color-text)' }}>Phone</span>}
                   name="phone"
                   rules={[{ required: true, message: 'Please input your  phone!' }]}
                 >
                   <InputComponent size="large" value={stateUserDetails.phone} onChange={handleOnchangeDetails} name="phone" />
                 </Form.Item>
                 <Form.Item
-                  label={<span style={{ fontWeight: 600, color: '#333' }}>Address</span>}
+                  label={<span style={{ fontWeight: 600, color: 'var(--color-text)' }}>Address</span>}
                   name="address"
                   rules={[{ required: true, message: 'Please input your  address!' }]}
                   style={{ marginBottom: 0 }}

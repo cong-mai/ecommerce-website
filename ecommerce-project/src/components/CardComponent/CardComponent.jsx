@@ -33,7 +33,7 @@ const CardComponent = (props) => {
             <StyleNameProduct>{name}</StyleNameProduct>
             <WrapperReportText>
                 <span style={{ marginRight: '4px' }}>
-                    <span>{rating} </span> <StarFilled style={{ fontSize: '12px', color: 'rgb(253, 216, 54)' }} />
+                    <span>{rating} </span> <StarFilled style={{ fontSize: 'var(--font-size-xs)', color: 'rgb(253, 216, 54)' }} />
                 </span>
                 <WrapperStyleTextSell> | Sold {selled || 1000}+</WrapperStyleTextSell>
             </WrapperReportText>

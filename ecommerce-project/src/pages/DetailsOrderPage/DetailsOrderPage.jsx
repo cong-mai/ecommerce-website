@@ -34,8 +34,8 @@ const DetailsOrderPage = () => {
 
   return (
     <Loading isLoading={isPending}>
-      <div style={{ width: '100%', height: '100vh', background: '#f5f5fa' }}>
-        <div style={{ padding: '0 120px', margin: '0 auto' }}>
+      <div style={{ width: '100%', minHeight: '100vh', background: '#f5f5fa' }}>
+        <div style={{ padding: '0 var(--space-page-x)', margin: '0 auto' }}>
           <h2>Order Details</h2>
           <WrapperHeaderUser>
             <WrapperInfoUser>
@@ -64,7 +64,7 @@ const DetailsOrderPage = () => {
           <WrapperStyleContent>
             <WrapperTableHeader>
               <WrapperNameProduct style={{ flex: 1 }}>
-                <span style={{ fontSize: '12px', color: 'rgba(0,0,0,0.45)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.3px' }}>Product</span>
+                <span style={{ fontSize: 'var(--font-size-xs)', color: 'rgba(0,0,0,0.45)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.3px' }}>Product</span>
               </WrapperNameProduct>
               <WrapperItemLabel>Price</WrapperItemLabel>
               <WrapperItemLabel>Quantity</WrapperItemLabel>
@@ -81,10 +81,10 @@ const DetailsOrderPage = () => {
                       objectFit: 'cover',
                       border: '1px solid rgb(238, 238, 238)',
                       padding: '2px',
-                      borderRadius: '4px'
+                      borderRadius: 'var(--radius-sm)'
                     }}
                   />
-                  <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <div style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {order?.name}
                   </div>
                 </WrapperNameProduct>
@@ -96,16 +96,16 @@ const DetailsOrderPage = () => {
 
             <div style={{ marginTop: '16px', borderTop: '2px solid #f0f0f0', paddingTop: '12px', maxWidth: '360px', marginLeft: 'auto' }}>
               <WrapperAllPrice>
-                <span style={{ color: 'rgba(0,0,0,0.65)', fontSize: '14px' }}>Subtotal</span>
-                <span style={{ fontWeight: 600, fontSize: '14px' }}>${priceMemo}</span>
+                <span style={{ color: 'rgba(0,0,0,0.65)', fontSize: 'var(--font-size-sm)' }}>Subtotal</span>
+                <span style={{ fontWeight: 600, fontSize: 'var(--font-size-sm)' }}>${priceMemo}</span>
               </WrapperAllPrice>
               <WrapperAllPrice>
-                <span style={{ color: 'rgba(0,0,0,0.65)', fontSize: '14px' }}>Shipping fee</span>
-                <span style={{ fontWeight: 600, fontSize: '14px' }}>${data?.shippingPrice}</span>
+                <span style={{ color: 'rgba(0,0,0,0.65)', fontSize: 'var(--font-size-sm)' }}>Shipping fee</span>
+                <span style={{ fontWeight: 600, fontSize: 'var(--font-size-sm)' }}>${data?.shippingPrice}</span>
               </WrapperAllPrice>
               <WrapperAllPrice style={{ borderTop: '2px solid #f0f0f0', marginTop: '8px', paddingTop: '12px' }}>
-                <span style={{ fontWeight: 700, fontSize: '16px' }}>Total</span>
-                <span style={{ fontWeight: 700, fontSize: '20px', color: 'rgb(255, 66, 78)' }}>${data?.totalPrice}</span>
+                <span style={{ fontWeight: 700, fontSize: 'var(--font-size-base)' }}>Total</span>
+                <span style={{ fontWeight: 700, fontSize: 'var(--font-size-lg)', color: 'var(--color-danger)' }}>${data?.totalPrice}</span>
               </WrapperAllPrice>
             </div>
           </WrapperStyleContent>

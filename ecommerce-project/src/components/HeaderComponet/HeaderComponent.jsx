@@ -7,17 +7,20 @@ import {
   ShoppingCartOutlined
 } from '@ant-design/icons';
 import ButtonInputSearch from "../ButtonInputSearch/ButtonInputSearch";
+import LogoMark from "../LogoMark/LogoMark";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as UserService from '../../services/UserService'
 import { resetUser } from '../../redux/slides/userSlide'
 import Loading from '../LoadingComponent/Loading'
 import { SearchProduct } from "../../redux/slides/productSile";
+import { useScrollDirection } from "../../hooks/useScrollDirection";
 
 const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
   const navigate = useNavigate()
   const user = useSelector((state) => state.user)
   const dispatch = useDispatch()
+  const hiddenOnScroll = useScrollDirection()
   const [userName, setUserName] = useState('')
   const [userAvatar, setUserAvatar] = useState('')
   const [, setSearch] = useState('')
@@ -74,15 +77,23 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     dispatch(SearchProduct(e.target.value))
   }
   return (
-    <div style={{ background: 'rgb(26, 148, 255)', justifyContent: 'center' }}>
+    <div style={{
+      background: 'var(--color-primary)',
+      justifyContent: 'center',
+      position: 'sticky',
+      top: 0,
+      zIndex: 100,
+      transform: hiddenOnScroll ? 'translateY(-100%)' : 'translateY(0)',
+      transition: 'transform 0.3s ease'
+    }}>
       <WrapperHeader style={{ justifyContent: isHiddenSearch && isHiddenSearch ? 'space-between' : 'unset' }}>
-        <Col span={5}>
+        <Col xs={{ span: 12, order: 1 }} sm={{ span: 12, order: 1 }} md={{ span: 5, order: 1 }}>
           <WrapperTextHeader to="/" style={{ cursor: 'pointer' }}>
-            CONG MAI
+            <LogoMark />
           </WrapperTextHeader>
         </Col>
         {!isHiddenSearch && (
-          <Col span={13}>
+          <Col xs={{ span: 24, order: 3 }} sm={{ span: 24, order: 3 }} md={{ span: 13, order: 2 }}>
             <ButtonInputSearch
               size='large'
               placeholder='Search for products, brands and more'
@@ -91,7 +102,11 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
           </Col>
         )}
 
-        <Col span={6} style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+        <Col
+          xs={{ span: 12, order: 2 }}
+          sm={{ span: 12, order: 2 }}
+          md={{ span: 6, order: 3 }}
+          style={{ display: 'flex', gap: '20px', alignItems: 'center', justifyContent: 'flex-end' }}>
           <Loading isLoading={isPending}>
             <WrapperHeaderAccount>
               {userAvatar ? (
@@ -102,7 +117,7 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
                   objectFit: 'cover'
                 }} />
               ) : (
-                <UserOutlined style={{ fontSize: '30px' }} />
+                <UserOutlined style={{ fontSize: 'var(--font-size-2xl)' }} />
               )}
               {user?.email ? (
                 <>
@@ -126,7 +141,7 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
           {!isHiddenCart && (
             <div onClick={() => navigate('/order')} style={{ cursor: 'pointer' }}>
               <Badge count={order?.orderItems?.length} size="small">
-                <ShoppingCartOutlined style={{ fontSize: '30px', color: '#fff' }} />
+                <ShoppingCartOutlined style={{ fontSize: 'var(--font-size-2xl)', color: 'var(--color-white)' }} />
               </Badge>
               <WrapperTextHeaderSmall>Cart</WrapperTextHeaderSmall>
 

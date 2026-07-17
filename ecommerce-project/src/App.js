@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
+import { ConfigProvider } from 'antd'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import DefaultComponent from './components/DefaultComponent/DefaultComponent'
 import routes from './routes'
@@ -65,27 +66,36 @@ function App() {
   }
 
   return (
-    <div style={{ height: '100vh', width: '100%' }}>
-      <Loading isLoading={isLoading}>
-        <Router>
-          <Routes>
-            {routes.map((route) => {
-              const Page = route.page
-              const ischeckAuth = !route.isPrivate || user.isAdmin
-              const Layout = route.isShowHeader ? DefaultComponent : Fragment
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#1a94ff',
+          fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+        },
+      }}
+    >
+      <div style={{ height: '100vh', width: '100%' }}>
+        <Loading isLoading={isLoading}>
+          <Router>
+            <Routes>
+              {routes.map((route) => {
+                const Page = route.page
+                const ischeckAuth = !route.isPrivate || user.isAdmin
+                const Layout = route.isShowHeader ? DefaultComponent : Fragment
 
-              return (
-                <Route key={route.path} path={ischeckAuth ? route.path : undefined} element={
-                  <Layout>
-                    <Page />
-                  </Layout>
-                } />
-              )
-            })}
-          </Routes>
-        </Router>
-      </Loading>
-    </div>
+                return (
+                  <Route key={route.path} path={ischeckAuth ? route.path : undefined} element={
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  } />
+                )
+              })}
+            </Routes>
+          </Router>
+        </Loading>
+      </div>
+    </ConfigProvider>
   )
 }
 

@@ -8,7 +8,7 @@ const PieChartComponent = ({ data: rawData }) => {
 
   if (!data || data.length === 0) {
     return (
-      <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', fontSize: '13px' }}>
+      <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-muted)', fontSize: 'var(--font-size-sm)' }}>
         No order data
       </div>
     )
@@ -69,7 +69,7 @@ const PieChartComponent = ({ data: rawData }) => {
         {data.map((d, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <div style={{ width: 12, height: 12, borderRadius: '50%', background: COLORS[i % COLORS.length] }} />
-            <span style={{ fontSize: 13 }}>{d.name}: {d.value}</span>
+            <span style={{ fontSize: 'var(--font-size-sm)' }}>{d.name}: {d.value}</span>
           </div>
         ))}
       </div>

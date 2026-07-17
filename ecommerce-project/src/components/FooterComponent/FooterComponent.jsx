@@ -3,18 +3,19 @@ import { Col, Row } from 'antd'
 import { FacebookOutlined, YoutubeOutlined, InstagramOutlined, TwitterOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import LogoMark from '../LogoMark/LogoMark'
 
 const WrapperFooter = styled.div`
-    background-color: rgb(26, 148, 255);
-    padding: 40px 120px 20px;
-    color: #fff;
+    background-color: var(--color-primary);
+    padding: 40px var(--space-page-x) 20px;
+    color: var(--color-white);
     margin-top: auto;
 `
 
 const FooterTitle = styled.h4`
-    color: #fff;
+    color: var(--color-white);
     font-weight: 700;
-    font-size: 15px;
+    font-size: var(--font-size-sm);
     margin-bottom: 16px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -23,21 +24,21 @@ const FooterTitle = styled.h4`
 const FooterLink = styled(Link)`
     display: block;
     color: rgba(255,255,255,0.85);
-    font-size: 13px;
+    font-size: var(--font-size-sm);
     margin-bottom: 8px;
-    &:hover { color: #fff; text-decoration: underline; }
+    &:hover { color: var(--color-white); text-decoration: underline; }
 `
 
 const FooterText = styled.p`
     color: rgba(255,255,255,0.85);
-    font-size: 13px;
+    font-size: var(--font-size-sm);
     margin-bottom: 8px;
     margin: 0 0 8px;
 `
 
 const SocialIcon = styled.a`
-    color: #fff;
-    font-size: 22px;
+    color: var(--color-white);
+    font-size: var(--font-size-xl);
     margin-right: 14px;
     &:hover { color: rgba(255,255,255,0.7); }
 `
@@ -52,8 +53,8 @@ const FooterComponent = () => {
         <WrapperFooter>
             <Row gutter={[32, 24]}>
                 <Col xs={24} sm={12} md={6}>
-                    <FooterTitle>CONG MAI</FooterTitle>
-                    <FooterText>Your trusted online shopping destination for electronics, phones, and accessories.</FooterText>
+                    <LogoMark />
+                    <FooterText style={{ marginTop: 14 }}>Your trusted online shopping destination for electronics, phones, and accessories.</FooterText>
                     <div style={{ marginTop: 16 }}>
                         <SocialIcon href="#"><FacebookOutlined /></SocialIcon>
                         <SocialIcon href="#"><YoutubeOutlined /></SocialIcon>
@@ -88,7 +89,7 @@ const FooterComponent = () => {
             </Row>
 
             <Divider />
-            <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.75)', fontSize: 13 }}>
+            <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.75)', fontSize: 'var(--font-size-sm)' }}>
                 © {new Date().getFullYear()} Cong Mai. All rights reserved.
             </div>
         </WrapperFooter>

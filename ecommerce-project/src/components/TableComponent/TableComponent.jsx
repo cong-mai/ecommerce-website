@@ -37,7 +37,7 @@ const TableComponent = (props) => {
       {!!rowSelectedKeys.length && !!handleDeleteMany && (
         <div style={{
           background: '#1d1ddd',
-          color: '#fff',
+          color: 'var(--color-white)',
           fontWeight: 'bold',
           padding: '10px',
           cursor: 'pointer'

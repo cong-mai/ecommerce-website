@@ -11,7 +11,8 @@ const productSchema = new mongoose.Schema(
         description: { type: String },
         discount: { type: Number, default: 0 },
         selled: { type: Number },
-        quality: { type: Number }
+        quality: { type: Number },
+        embedding: { type: [Number], default: undefined }
     },
     {
         timestamps: true,

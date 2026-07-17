@@ -1,4 +1,9 @@
 const Product = require("../models/ProductModel")
+const EmbeddingService = require("./EmbeddingService")
+
+const buildEmbeddingText = (name, type, description) => {
+    return [name, type, description].filter(Boolean).join(' - ')
+}
 
 const createProduct = (newProduct) => {
     return new Promise(async (resolve, reject) => {
@@ -13,6 +18,13 @@ const createProduct = (newProduct) => {
                     message: 'The name of product is already'
                 })
             }
+            let embedding = undefined
+            try {
+                embedding = await EmbeddingService.generateEmbedding(buildEmbeddingText(name, type, description))
+            } catch (e) {
+                console.error('[ProductService] embedding generation failed on create:', e.message)
+            }
+
             const newProduct = await Product.create({
                 name,
                 image,
@@ -22,6 +34,7 @@ const createProduct = (newProduct) => {
                 rating,
                 description,
                 discount,
+                embedding,
             })
             if (newProduct) {
                 resolve({
@@ -47,6 +60,18 @@ const updateProduct = (id, data) => {
                     status: 'ERR',
                     message: 'The product is not defined'
                 })
+            }
+
+            if (data.name || data.type || data.description) {
+                try {
+                    data.embedding = await EmbeddingService.generateEmbedding(buildEmbeddingText(
+                        data.name ?? checkProduct.name,
+                        data.type ?? checkProduct.type,
+                        data.description ?? checkProduct.description
+                    ))
+                } catch (e) {
+                    console.error('[ProductService] embedding generation failed on update:', e.message)
+                }
             }
 
             const updatedProduct = await Product.findByIdAndUpdate(id, data, { new: true })
@@ -172,6 +197,45 @@ const getAllProduct = (limit, page, sort, filter) => {
     })
 }
 
+const MIN_SIMILARITY_SCORE = 0.15
+
+const searchProductSemantic = (query, limit) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const queryVector = await EmbeddingService.generateEmbedding(query)
+            const candidates = await Product.find({ embedding: { $exists: true, $ne: [] } })
+            const results = candidates
+                .map((product) => {
+                    const obj = product.toObject()
+                    obj.score = EmbeddingService.cosineSimilarity(queryVector, product.embedding)
+                    return obj
+                })
+                .filter((product) => product.score >= MIN_SIMILARITY_SCORE)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, limit || 10)
+            resolve({
+                status: 'OK',
+                message: 'Success',
+                data: results,
+                total: results.length
+            })
+        } catch (e) {
+            console.error('[ProductService] semantic search failed, falling back to regex:', e.message)
+            try {
+                const fallbackResults = await Product.find({ name: { '$regex': query, '$options': 'i' } }).limit(limit || 10)
+                resolve({
+                    status: 'OK',
+                    message: 'Success',
+                    data: fallbackResults,
+                    total: fallbackResults.length
+                })
+            } catch (fallbackError) {
+                reject(fallbackError)
+            }
+        }
+    })
+}
+
 const getAllType = () => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -194,5 +258,6 @@ module.exports = {
     deleteProduct,
     getAllProduct,
     deleteManyProduct,
-    getAllType
+    getAllType,
+    searchProductSemantic
 }

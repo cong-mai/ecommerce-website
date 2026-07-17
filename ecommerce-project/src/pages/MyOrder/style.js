@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const WrapperContainer = styled.div`
   width: 100%;
-  background-color: #ececec;
+  background-color: var(--color-bg-page);
   min-height: 100vh;
 `
 
@@ -16,8 +16,8 @@ export const WrapperListOrder = styled.div`
 
 export const WrapperItemOrder = styled.div`
   width: 100%;
-  background: #fff;
-  border-radius: 8px;
+  background: var(--color-white);
+  border-radius: var(--radius-md);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 `
@@ -34,10 +34,10 @@ export const WrapperStatus = styled.div`
 `
 
 export const WrapperStatusBadge = styled.span`
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   padding: 3px 10px;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: ${(props) => (props.$active ? 'rgb(230, 247, 233)' : 'rgb(255, 241, 240)')};
   color: ${(props) => (props.$active ? 'rgb(56, 158, 13)' : 'rgb(255, 77, 79)')};
 `
