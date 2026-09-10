@@ -25,3 +25,19 @@ if (typeof global.MessageChannel === 'undefined') {
     }
   }
 }
+
+// jsdom doesn't implement window.matchMedia, but antd's responsive Grid
+// (Col/Row breakpoint observer) subscribes to it on mount. Standard stub —
+// tests don't care about actual breakpoint matching.
+if (typeof window.matchMedia !== 'function') {
+  window.matchMedia = (query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: () => {},
+    removeListener: () => {},
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    dispatchEvent: () => false,
+  })
+}
