@@ -34,6 +34,10 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
   const handleLogout = async () => {
     setLoading(true)
     await UserService.logoutUser()
+    localStorage.removeItem('access_token')
+    // Stale key from before the refresh token moved to an httpOnly cookie —
+    // clear it too for anyone who still has it lingering in their browser.
+    localStorage.removeItem('refresh_token')
     dispatch(resetUser())
     setLoading(false)
   }

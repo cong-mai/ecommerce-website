@@ -139,25 +139,41 @@ const PaymentPage = () => {
     },
   )
 
+  const mutationCapturePaypalOrder = useMutationHooks(
+    (data) => {
+      const {
+        token,
+        ...rests } = data
+      const res = OrderService.capturePaypalOrder(
+        { ...rests }, token)
+      return res
+    },
+  )
+
   const { isPending } = mutationUpdate
   const { data: dataAdd, isPending: isLoadingAddOrder, isSuccess, isError } = mutationAddOrder
+  const { isPending: isCapturingPaypalOrder } = mutationCapturePaypalOrder
+
+  const handleOrderPlaced = () => {
+    const arrayOrdered = []
+    order?.orderItemsSlected?.forEach(element => {
+      arrayOrdered.push(element.product)
+    });
+    dispatch(removeAllOrderProduct({ listChecked: arrayOrdered }))
+    message.success('Order placed successfully')
+    navigate('/orderSuccess', {
+      state: {
+        delivery,
+        payment,
+        orders: order?.orderItemsSlected,
+        totalPriceMemo: totalPriceMemo
+      }
+    })
+  }
 
   useEffect(() => {
     if (isSuccess && dataAdd?.status === 'OK') {
-      const arrayOrdered = []
-      order?.orderItemsSlected?.forEach(element => {
-        arrayOrdered.push(element.product)
-      });
-      dispatch(removeAllOrderProduct({ listChecked: arrayOrdered }))
-      message.success('Order placed successfully')
-      navigate('/orderSuccess', {
-        state: {
-          delivery,
-          payment,
-          orders: order?.orderItemsSlected,
-          totalPriceMemo: totalPriceMemo
-        }
-      })
+      handleOrderPlaced()
     } else if (isSuccess && dataAdd?.status === 'ERR') {
       message.error(dataAdd?.message || 'Order failed')
     } else if (isError) {
@@ -177,25 +193,47 @@ const PaymentPage = () => {
     setIsOpenModalUpdateInfo(false)
   }
 
-  const onSuccessPaypal = (details, data) => {
-    mutationAddOrder.mutate(
+  // Server creates the PayPal order (and derives the amount itself, from
+  // live product prices) — the client never tells PayPal how much to charge.
+  const handleCreatePaypalOrder = async () => {
+    const response = await OrderService.createPaypalOrder(
       {
+        orderItems: order?.orderItemsSlected,
+        user: user?.id,
+      },
+      user?.access_token
+    )
+    if (response?.status !== 'OK' || !response?.paypalOrderId) {
+      message.error(response?.message || 'Could not start PayPal checkout')
+      throw new Error(response?.message || 'Could not start PayPal checkout')
+    }
+    return response.paypalOrderId
+  }
+
+  // Server captures the payment and verifies it against a freshly
+  // recomputed total before the order is actually placed.
+  const handleApprovePaypalOrder = async (data) => {
+    try {
+      const response = await mutationCapturePaypalOrder.mutateAsync({
         token: user?.access_token,
+        paypalOrderId: data.orderID,
         orderItems: order?.orderItemsSlected,
         fullName: user?.name,
         address: user?.address,
         phone: user?.phone,
         city: user?.city,
-        paymentMethod: payment,
-        itemsPrice: priceMemo,
-        shippingPrice: diliveryPriceMemo,
-        totalPrice: totalPriceMemo,
+        paymentMethod: 'paypal',
         user: user?.id,
-        isPaid: true,
-        paidAt: details.update_time,
         email: user?.email
+      })
+      if (response?.status === 'OK') {
+        handleOrderPlaced()
+      } else {
+        message.error(response?.message || 'Payment could not be completed')
       }
-    )
+    } catch (e) {
+      message.error('Something went wrong finalizing your PayPal payment')
+    }
   }
 
 
@@ -234,7 +272,7 @@ const PaymentPage = () => {
   return (
     <div style={{ background: 'var(--color-bg-page)', width: '100%', minHeight: '75vh' }}>
       <div style={{ boxSizing: 'border-box', padding: '24px var(--space-page-x) 40px', maxWidth: '1300px', margin: '0 auto' }}>
-        <Loading isLoading={isLoadingAddOrder}>
+        <Loading isLoading={isLoadingAddOrder || isCapturingPaypalOrder}>
           <h3 style={{ fontWeight: 700, color: 'var(--color-text)' }}>Payment</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'flex-start', gap: '0 24px' }}>
             <WrapperLeft>
@@ -288,15 +326,8 @@ const PaymentPage = () => {
                 <PayPalScriptProvider options={{ clientId: paypalClientId, currency: 'USD' }}>
                   <PayPalButtons
                     style={{ layout: 'horizontal', height: 48 }}
-                    createOrder={(data, actions) => {
-                      return actions.order.create({
-                        purchase_units: [{ amount: { value: String(totalPriceMemo) } }]
-                      })
-                    }}
-                    onApprove={async (data, actions) => {
-                      const details = await actions.order.capture()
-                      onSuccessPaypal(details, data)
-                    }}
+                    createOrder={handleCreatePaypalOrder}
+                    onApprove={handleApprovePaypalOrder}
                   />
                 </PayPalScriptProvider>
               ) : payment === 'paypal' && !paypalClientId ? (

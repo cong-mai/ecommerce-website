@@ -50,12 +50,11 @@ export const updateUser = async (id, data, access_token) => {
     return res.data
 }
 
-export const refreshToken = async (refreshToken) => {
-    console.log('refreshToken', refreshToken)
+export const refreshToken = async () => {
+    // The refresh token lives only in the httpOnly cookie the backend set at
+    // login — it's never read or held by JS, so nothing is passed here.
     const res = await axios.post(`${process.env.REACT_APP_URL_BACKEND}/user/refresh-token`, {}, {
-        headers: {
-            token: `Bearer ${refreshToken}`,
-        }
+        withCredentials: true,
     })
     return res.data
 }

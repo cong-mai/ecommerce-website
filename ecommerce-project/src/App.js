@@ -35,31 +35,39 @@ function App() {
     }
     return { decoded, storageData }
   }
-  UserService.axiosJWT.interceptors.request.use(async (config) => {
-    const currentTime = new Date()
-    const { decoded } = handleDecoded()
-    let storageRefreshToken = localStorage.getItem('refresh_token')
-    const refreshToken = JSON.parse(storageRefreshToken)
-    const decodedRefreshToken = jwtDecode(refreshToken)
-    if (decoded?.exp < currentTime.getTime() / 1000) {
-      if (decodedRefreshToken?.exp > currentTime.getTime() / 1000) {
-        const data = await UserService.refreshToken(refreshToken)
-        config.headers['token'] = `Bearer ${data?.access_token}`
-      } else {
-        dispatch(resetUser())
+  useEffect(() => {
+    const interceptorId = UserService.axiosJWT.interceptors.request.use(async (config) => {
+      const currentTime = new Date()
+      const { decoded } = handleDecoded()
+      if (decoded?.exp && decoded.exp < currentTime.getTime() / 1000) {
+        // The refresh token lives only in the httpOnly cookie the browser
+        // sends automatically — the frontend never reads or holds it.
+        try {
+          const data = await UserService.refreshToken()
+          if (data?.access_token) {
+            config.headers['token'] = `Bearer ${data.access_token}`
+          } else {
+            dispatch(resetUser())
+          }
+        } catch (error) {
+          dispatch(resetUser())
+        }
       }
+      return config
+    }, function (error) {
+      return Promise.reject(error);
+    })
+
+    return () => {
+      UserService.axiosJWT.interceptors.request.eject(interceptorId)
     }
-    return config
-  }, function (error) {
-    return Promise.reject(error);
-  })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleGetDetailsUser = async (id, token) => {
     try {
-      let storageRefreshToken = localStorage.getItem('refresh_token')
-      const refreshToken = JSON.parse(storageRefreshToken)
       const res = await UserService.getDetailsUser(id, token)
-      dispatch(updateUser({ ...res?.data, access_token: token, refreshToken: refreshToken }))
+      dispatch(updateUser({ ...res?.data, access_token: token }))
     } catch (error) {
       dispatch(resetUser())
     }

@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --runInBand",
     "start": "nodemon src/index.js"
   },
   "dependencies": {
@@ -23,5 +23,9 @@
     "nodemailer": "^9.0.1",
     "nodemailer-plugin-inline-base64": "^2.1.1",
     "openai": "^6.45.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4"
   }
 }

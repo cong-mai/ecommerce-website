@@ -1,9 +1,10 @@
+const jwt = require('jsonwebtoken')
 const OrderService = require('../services/OrderService')
 
 const createOrder = async (req, res) => {
-    try { 
-        const { paymentMethod, itemsPrice, shippingPrice, totalPrice, fullName, address, city, phone } = req.body
-        if (!paymentMethod || !itemsPrice || shippingPrice === undefined || !totalPrice || !fullName || !address || !city || !phone) {
+    try {
+        const { orderItems, paymentMethod, fullName, address, city, phone } = req.body
+        if (!paymentMethod || !fullName || !address || !city || !phone || !Array.isArray(orderItems) || orderItems.length === 0) {
             return res.status(200).json({
                 status: 'ERR',
                 message: 'The input is required'
@@ -14,6 +15,43 @@ const createOrder = async (req, res) => {
     } catch (e) {
         return res.status(404).json({
             message: e
+        })
+    }
+}
+
+const createPaypalOrder = async (req, res) => {
+    try {
+        const { orderItems } = req.body
+        if (!Array.isArray(orderItems) || orderItems.length === 0) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The input is required'
+            })
+        }
+        const response = await OrderService.createPaypalOrder(req.body)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e.message || e
+        })
+    }
+}
+
+const capturePaypalOrder = async (req, res) => {
+    try {
+        const { paypalOrderId, orderItems, paymentMethod, fullName, address, city, phone } = req.body
+        if (!paypalOrderId || !Array.isArray(orderItems) || orderItems.length === 0
+            || !paymentMethod || !fullName || !address || !city || !phone) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The input is required'
+            })
+        }
+        const response = await OrderService.capturePaypalOrder(paypalOrderId, req.body)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e.message || e
         })
     }
 }
@@ -46,7 +84,35 @@ const getDetailsOrder = async (req, res) => {
                 message: 'The userId is required'
             })
         }
+
+        const token = req.headers.token && req.headers.token.split(' ')[1]
+        if (!token) {
+            return res.status(404).json({
+                message: 'The authentication',
+                status: 'ERROR'
+            })
+        }
+
+        let decodedUser
+        try {
+            decodedUser = jwt.verify(token, process.env.ACCESS_TOKEN)
+        } catch (e) {
+            return res.status(404).json({
+                message: 'The authentication',
+                status: 'ERROR'
+            })
+        }
+
         const response = await OrderService.getOrderDetails(orderId)
+        const orderOwnerId = response && response.data && response.data.user
+        const isOwner = orderOwnerId && String(orderOwnerId) === String(decodedUser && decodedUser.id)
+        if (orderOwnerId && !decodedUser?.isAdmin && !isOwner) {
+            return res.status(404).json({
+                message: 'The authentication',
+                status: 'ERROR'
+            })
+        }
+
         return res.status(200).json(response)
     } catch (e) {
         // console.log(e)
@@ -90,6 +156,8 @@ const getAllOrder = async (req, res) => {
 
 module.exports = {
     createOrder,
+    createPaypalOrder,
+    capturePaypalOrder,
     getAllOrderDetails,
     getDetailsOrder,
     cancelOrderDetails,
