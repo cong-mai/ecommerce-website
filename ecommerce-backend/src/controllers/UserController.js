@@ -1,5 +1,6 @@
 const UserService = require('../services/UserService')
 const JwtService = require('../services/JwtService')
+const { getRefreshTokenCookieOptions } = require('../utils/cookieOptions')
 
 const createUser = async (req, res) => {
     try {
@@ -49,13 +50,10 @@ const loginUser = async (req, res) => {
         }
         const response = await UserService.loginUser(req.body)
         const { refresh_token, ...newReponse } = response
-        res.cookie('refresh_token', refresh_token, {
-            httpOnly: true,
-            secure: false,
-            sameSite: 'strict',
-            path: '/',
-        })
-        return res.status(200).json({ ...newReponse, refresh_token })
+        if (refresh_token) {
+            res.cookie('refresh_token', refresh_token, getRefreshTokenCookieOptions())
+        }
+        return res.status(200).json(newReponse)
     } catch (e) {
         return res.status(404).json({
             message: e
@@ -149,7 +147,7 @@ const getDetailsUser = async (req, res) => {
 
 const refreshToken = async (req, res) => {
     try {
-        let token = req.headers.token.split(' ')[1]
+        const token = req.cookies && req.cookies.refresh_token
         if (!token) {
             return res.status(200).json({
                 status: 'ERR',
@@ -167,7 +165,7 @@ const refreshToken = async (req, res) => {
 
 const logoutUser = async (req, res) => {
     try {
-        res.clearCookie('refresh_token')
+        res.clearCookie('refresh_token', { path: '/' })
         return res.status(200).json({
             status: 'Ok',
             message: 'Logout successfully'
