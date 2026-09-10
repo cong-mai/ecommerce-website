@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken')
 const OrderService = require('../services/OrderService')
 
 const createOrder = async (req, res) => {
@@ -46,7 +47,35 @@ const getDetailsOrder = async (req, res) => {
                 message: 'The userId is required'
             })
         }
+
+        const token = req.headers.token && req.headers.token.split(' ')[1]
+        if (!token) {
+            return res.status(404).json({
+                message: 'The authentication',
+                status: 'ERROR'
+            })
+        }
+
+        let decodedUser
+        try {
+            decodedUser = jwt.verify(token, process.env.ACCESS_TOKEN)
+        } catch (e) {
+            return res.status(404).json({
+                message: 'The authentication',
+                status: 'ERROR'
+            })
+        }
+
         const response = await OrderService.getOrderDetails(orderId)
+        const orderOwnerId = response && response.data && response.data.user
+        const isOwner = orderOwnerId && String(orderOwnerId) === String(decodedUser && decodedUser.id)
+        if (orderOwnerId && !decodedUser?.isAdmin && !isOwner) {
+            return res.status(404).json({
+                message: 'The authentication',
+                status: 'ERROR'
+            })
+        }
+
         return res.status(200).json(response)
     } catch (e) {
         // console.log(e)
