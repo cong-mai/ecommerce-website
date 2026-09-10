@@ -85,7 +85,7 @@ beforeEach(() => {
 })
 
 describe('PaymentPage PayPal flow', () => {
-    it('asks the backend to create the PayPal order and returns its paypalOrderId — no price is sent to PayPal from the client', async () => {
+    it('asks the backend to create the PayPal order and returns its paypalOrderId - no price is sent to PayPal from the client', async () => {
         OrderService.createPaypalOrder.mockResolvedValue({ status: 'OK', paypalOrderId: 'PAYPAL-1' })
         renderPage()
         await switchToPaypal()

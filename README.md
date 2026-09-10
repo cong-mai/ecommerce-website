@@ -43,7 +43,7 @@ cd your-repo-name
 
 ### 2. Setup environment variables
 
-**Backend** — create `ecommerce-backend/src/.env`:
+**Backend** - create `ecommerce-backend/src/.env`:
 ```env
 PORT=3001
 MONGO_DB=your_mongodb_atlas_connection_string
@@ -51,7 +51,7 @@ ACCESS_TOKEN=your_jwt_access_token_secret
 REFRESH_TOKEN=your_jwt_refresh_token_secret
 ```
 
-**Frontend** — create `ecommerce-project/.env`:
+**Frontend** - create `ecommerce-project/.env`:
 ```env
 REACT_APP_URL_BACKEND=http://localhost:3001/api
 ```

@@ -21,7 +21,7 @@ describe('POST /api/user/refresh-token', () => {
         expect(JwtService.refreshTokenJwtService).not.toHaveBeenCalled()
     })
 
-    it('ignores a legacy Authorization-style token header — only the cookie counts', async () => {
+    it('ignores a legacy Authorization-style token header - only the cookie counts', async () => {
         const res = await request(app)
             .post('/api/user/refresh-token')
             .set('token', 'Bearer some-legacy-refresh-token')

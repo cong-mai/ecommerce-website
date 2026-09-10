@@ -46,7 +46,7 @@ describe('OrderService.createOrder pricing', () => {
         const newOrder = {
             ...baseNewOrder,
             orderItems: [{ product: 'prod-1', amount: 2, name: 'Widget' }],
-            // attacker-supplied lowball values — must be ignored
+            // attacker-supplied lowball values - must be ignored
             itemsPrice: 0.01,
             shippingPrice: 0,
             totalPrice: 0.01,

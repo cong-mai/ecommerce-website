@@ -64,20 +64,20 @@ const FooterComponent = () => {
                 </Col>
 
                 <Col xs={24} sm={12} md={6}>
-                    <FooterTitle>Customer Support</FooterTitle>
-                    <FooterLink to="#">Help Center</FooterLink>
-                    <FooterLink to="#">How to Order</FooterLink>
-                    <FooterLink to="#">Return Policy</FooterLink>
-                    <FooterLink to="#">Track My Order</FooterLink>
-                    <FooterLink to="#">Contact Us</FooterLink>
+                    <FooterTitle><Link to="/support" style={{ color: 'inherit' }}>Customer Support</Link></FooterTitle>
+                    <FooterLink to="/support/help-center">Help Center</FooterLink>
+                    <FooterLink to="/support/how-to-order">How to Order</FooterLink>
+                    <FooterLink to="/support/return-policy">Return Policy</FooterLink>
+                    <FooterLink to="/support/track-order">Track My Order</FooterLink>
+                    <FooterLink to="/support/contact-us">Contact Us</FooterLink>
                 </Col>
 
                 <Col xs={24} sm={12} md={6}>
-                    <FooterTitle>About Us</FooterTitle>
-                    <FooterLink to="#">About Cong Mai</FooterLink>
-                    <FooterLink to="#">Careers</FooterLink>
-                    <FooterLink to="#">Privacy Policy</FooterLink>
-                    <FooterLink to="#">Terms of Service</FooterLink>
+                    <FooterTitle><Link to="/about" style={{ color: 'inherit' }}>About Us</Link></FooterTitle>
+                    <FooterLink to="/about/cong-mai">About Cong Mai</FooterLink>
+                    <FooterLink to="/careers">Careers</FooterLink>
+                    <FooterLink to="/privacy-policy">Privacy Policy</FooterLink>
+                    <FooterLink to="/terms-of-service">Terms of Service</FooterLink>
                 </Col>
 
                 <Col xs={24} sm={12} md={6}>

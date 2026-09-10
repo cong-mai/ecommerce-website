@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 
 // jsdom (Jest's test environment) doesn't provide MessageChannel, but antd's
 // Form implementation (@rc-component/form) uses it to schedule field-value
-// updates as a macrotask. A minimal setTimeout-based shim is enough — no
+// updates as a macrotask. A minimal setTimeout-based shim is enough - no
 // need for a real cross-thread channel in tests.
 if (typeof global.MessageChannel === 'undefined') {
   class FakeMessagePort {
@@ -27,17 +27,17 @@ if (typeof global.MessageChannel === 'undefined') {
 }
 
 // jsdom doesn't implement window.matchMedia, but antd's responsive Grid
-// (Col/Row breakpoint observer) subscribes to it on mount. Standard stub —
+// (Col/Row breakpoint observer) subscribes to it on mount. Standard stub -
 // tests don't care about actual breakpoint matching.
 if (typeof window.matchMedia !== 'function') {
   window.matchMedia = (query) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: () => {},
-    removeListener: () => {},
-    addEventListener: () => {},
-    removeEventListener: () => {},
+    addListener: () => { },
+    removeListener: () => { },
+    addEventListener: () => { },
+    removeEventListener: () => { },
     dispatchEvent: () => false,
   })
 }
