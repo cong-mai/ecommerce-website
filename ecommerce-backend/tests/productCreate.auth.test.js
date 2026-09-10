@@ -37,6 +37,16 @@ beforeEach(() => {
 })
 
 describe('POST /api/product/create auth', () => {
+    it('rejects a request with no token header at all and never touches the Product model', async () => {
+        const res = await request(app)
+            .post('/api/product/create')
+            .send(validProductPayload)
+
+        expect(res.status).toBe(404)
+        expect(res.body.status).toBe('ERROR')
+        expect(Product.create).not.toHaveBeenCalled()
+    })
+
     it('rejects an invalid/garbage token and never touches the Product model', async () => {
         const res = await request(app)
             .post('/api/product/create')

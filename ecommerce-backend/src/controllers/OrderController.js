@@ -19,6 +19,43 @@ const createOrder = async (req, res) => {
     }
 }
 
+const createPaypalOrder = async (req, res) => {
+    try {
+        const { orderItems } = req.body
+        if (!Array.isArray(orderItems) || orderItems.length === 0) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The input is required'
+            })
+        }
+        const response = await OrderService.createPaypalOrder(req.body)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e.message || e
+        })
+    }
+}
+
+const capturePaypalOrder = async (req, res) => {
+    try {
+        const { paypalOrderId, orderItems, paymentMethod, fullName, address, city, phone } = req.body
+        if (!paypalOrderId || !Array.isArray(orderItems) || orderItems.length === 0
+            || !paymentMethod || !fullName || !address || !city || !phone) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The input is required'
+            })
+        }
+        const response = await OrderService.capturePaypalOrder(paypalOrderId, req.body)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e.message || e
+        })
+    }
+}
+
 const getAllOrderDetails = async (req, res) => {
     try {
         const userId = req.params.id
@@ -119,6 +156,8 @@ const getAllOrder = async (req, res) => {
 
 module.exports = {
     createOrder,
+    createPaypalOrder,
+    capturePaypalOrder,
     getAllOrderDetails,
     getDetailsOrder,
     cancelOrderDetails,
