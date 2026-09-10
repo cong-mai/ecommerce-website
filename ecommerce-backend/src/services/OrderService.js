@@ -2,10 +2,57 @@ const Order = require("../models/OrderProduct")
 const Product = require("../models/ProductModel")
 const EmailService = require("../services/EmailService")
 
+const round2 = (n) => Math.round(n * 100) / 100
+
+const computeShippingPrice = (itemsPrice) => {
+    if (itemsPrice >= 50) return 0
+    if (itemsPrice >= 20) return 10
+    return 20
+}
+
+// Prices are always derived from the live Product records here, never from
+// whatever the client sent — orderItems only carries product ids/amounts.
+const computeOrderPricing = async (orderItems) => {
+    const products = await Promise.all(
+        orderItems.map((item) => Product.findById(item.product))
+    )
+
+    const missingIndex = products.findIndex((product) => !product)
+    if (missingIndex !== -1) {
+        const missingItem = orderItems[missingIndex]
+        return { error: `Product "${missingItem.name || missingItem.product}" is not available` }
+    }
+
+    const itemsPrice = products.reduce((total, product, index) => {
+        const amount = orderItems[index].amount
+        const discount = product.discount || 0
+        const lineTotal = product.price * (1 - discount / 100) * amount
+        return total + lineTotal
+    }, 0)
+
+    const shippingPrice = computeShippingPrice(itemsPrice)
+
+    return {
+        itemsPrice: round2(itemsPrice),
+        shippingPrice,
+        totalPrice: round2(itemsPrice + shippingPrice),
+    }
+}
+
 const createOrder = (newOrder) => {
     return new Promise(async (resolve, reject) => {
-        const { orderItems, paymentMethod, itemsPrice, shippingPrice, totalPrice, fullName, address, city, phone, user, isPaid, paidAt, email } = newOrder
+        const { orderItems, paymentMethod, fullName, address, city, phone, user, email } = newOrder
         try {
+            const pricing = await computeOrderPricing(orderItems)
+            if (pricing.error) {
+                resolve({
+                    status: 'ERR',
+                    message: pricing.error
+                })
+                return
+            }
+            const { itemsPrice, shippingPrice, totalPrice } = pricing
+
             const promises = orderItems.map(async (order) => {
                 const productData = await Product.findOneAndUpdate(
                     {
@@ -56,7 +103,8 @@ const createOrder = (newOrder) => {
                     shippingPrice,
                     totalPrice,
                     user: user,
-                    isPaid, paidAt
+                    isPaid: false,
+                    paidAt: null
                 })
                 if (createdOrder) {
                     try {
