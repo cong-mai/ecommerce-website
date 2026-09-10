@@ -5,7 +5,9 @@
   /* Brand colors */
   --color-primary: #1a94ff;
   --color-primary-hover: #0d5cb6;
+  --color-primary-tint: #eaf4ff;
   --color-danger: #ff3945;
+  --color-ink: #14213a;
 
   /* Text colors */
   --color-text: #333333;

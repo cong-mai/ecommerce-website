@@ -194,7 +194,7 @@ const PaymentPage = () => {
   }
 
   // Server creates the PayPal order (and derives the amount itself, from
-  // live product prices) — the client never tells PayPal how much to charge.
+  // live product prices) - the client never tells PayPal how much to charge.
   const handleCreatePaypalOrder = async () => {
     const response = await OrderService.createPaypalOrder(
       {

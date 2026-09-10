@@ -17,7 +17,7 @@ const getAccessToken = async () => {
     return data.access_token
 }
 
-// Creates a PayPal order for exactly `totalPrice` — the caller must always
+// Creates a PayPal order for exactly `totalPrice` - the caller must always
 // pass a server-computed amount, never a client-supplied one.
 const createOrder = async (totalPrice, currency = 'USD') => {
     const accessToken = await getAccessToken()

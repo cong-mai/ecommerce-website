@@ -14,7 +14,7 @@ const computeShippingPrice = (itemsPrice) => {
 }
 
 // Prices are always derived from the live Product records here, never from
-// whatever the client sent — orderItems only carries product ids/amounts.
+// whatever the client sent - orderItems only carries product ids/amounts.
 const computeOrderPricing = async (orderItems) => {
     const products = await Promise.all(
         orderItems.map((item) => Product.findById(item.product))
@@ -124,7 +124,7 @@ const createOrder = (newOrder) => {
 
 // Step 1 of the PayPal flow: recompute the total server-side and ask
 // PayPal to create an order for exactly that amount. No DB writes happen
-// here — nothing is persisted until the payment is actually captured.
+// here - nothing is persisted until the payment is actually captured.
 const createPaypalOrder = (newOrder) => {
     return new Promise(async (resolve, reject) => {
         const { orderItems } = newOrder
@@ -159,7 +159,7 @@ const createPaypalOrder = (newOrder) => {
 // Step 2: capture the PayPal payment, verify it actually completed for the
 // (freshly recomputed) server-side total, then run the same stock-decrement
 // + Order.create path as the COD flow. Any failure past a successful
-// capture (amount mismatch, out of stock) triggers an automatic refund —
+// capture (amount mismatch, out of stock) triggers an automatic refund -
 // real money was already taken at that point, so it can't just be dropped.
 const capturePaypalOrder = (paypalOrderId, newOrder) => {
     return new Promise(async (resolve, reject) => {

@@ -11,6 +11,17 @@ import AdminPage from "../pages/AdminPage/AdminPage"
 import PaymentPage from "../pages/PaymentPage/PaymentPage"
 import MyOrderPage from "../pages/MyOrder/MyOrder"
 import DetailsOrderPage from "../pages/DetailsOrderPage/DetailsOrderPage"
+import CustomerSupportPage from "../pages/CustomerSupportPage/CustomerSupportPage"
+import HelpCenterPage from "../pages/HelpCenterPage/HelpCenterPage"
+import HowToOrderPage from "../pages/HowToOrderPage/HowToOrderPage"
+import ReturnPolicyPage from "../pages/ReturnPolicyPage/ReturnPolicyPage"
+import TrackOrderPage from "../pages/TrackOrderPage/TrackOrderPage"
+import ContactUsPage from "../pages/ContactUsPage/ContactUsPage"
+import AboutUsPage from "../pages/AboutUsPage/AboutUsPage"
+import AboutCongMaiPage from "../pages/AboutCongMaiPage/AboutCongMaiPage"
+import CareersPage from "../pages/CareersPage/CareersPage"
+import PrivacyPolicyPage from "../pages/PrivacyPolicyPage/PrivacyPolicyPage"
+import TermsOfServicePage from "../pages/TermsOfServicePage/TermsOfServicePage"
 
 const routes = [
     {
@@ -78,6 +89,61 @@ const routes = [
         page: AdminPage,
         isShowHeader: false,
         isPrivate: true
+    },
+    {
+        path: "/support",
+        page: CustomerSupportPage,
+        isShowHeader: true
+    },
+    {
+        path: "/support/help-center",
+        page: HelpCenterPage,
+        isShowHeader: true
+    },
+    {
+        path: "/support/how-to-order",
+        page: HowToOrderPage,
+        isShowHeader: true
+    },
+    {
+        path: "/support/return-policy",
+        page: ReturnPolicyPage,
+        isShowHeader: true
+    },
+    {
+        path: "/support/track-order",
+        page: TrackOrderPage,
+        isShowHeader: true
+    },
+    {
+        path: "/support/contact-us",
+        page: ContactUsPage,
+        isShowHeader: true
+    },
+    {
+        path: "/about",
+        page: AboutUsPage,
+        isShowHeader: true
+    },
+    {
+        path: "/about/cong-mai",
+        page: AboutCongMaiPage,
+        isShowHeader: true
+    },
+    {
+        path: "/careers",
+        page: CareersPage,
+        isShowHeader: true
+    },
+    {
+        path: "/privacy-policy",
+        page: PrivacyPolicyPage,
+        isShowHeader: true
+    },
+    {
+        path: "/terms-of-service",
+        page: TermsOfServicePage,
+        isShowHeader: true
     },
     {
         path: "*",

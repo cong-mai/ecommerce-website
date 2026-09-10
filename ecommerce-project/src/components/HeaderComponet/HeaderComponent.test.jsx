@@ -35,8 +35,8 @@ jest.mock('../../services/UserService', () => ({
 
 // antd's real Popover only renders `content` into the DOM once opened, and
 // its positioning logic depends on browser APIs (ResizeObserver, etc.) that
-// jsdom doesn't implement. None of that is what this test cares about — it
-// just needs the "Sign out" item to be clickable — so render both children
+// jsdom doesn't implement. None of that is what this test cares about - it
+// just needs the "Sign out" item to be clickable - so render both children
 // and content directly, unconditionally.
 jest.mock('antd', () => {
     const actual = jest.requireActual('antd')

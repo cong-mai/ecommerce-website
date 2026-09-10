@@ -20,7 +20,7 @@ jest.mock('./services/UserService', () => {
     }
 })
 
-// App renders the whole page tree under whatever route matches "/" — swap
+// App renders the whole page tree under whatever route matches "/" - swap
 // in a trivial stub so this test only exercises App's own token/interceptor
 // logic, not every page component's own data fetching.
 jest.mock('./routes', () => {

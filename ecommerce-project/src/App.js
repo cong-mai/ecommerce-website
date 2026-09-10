@@ -41,7 +41,7 @@ function App() {
       const { decoded } = handleDecoded()
       if (decoded?.exp && decoded.exp < currentTime.getTime() / 1000) {
         // The refresh token lives only in the httpOnly cookie the browser
-        // sends automatically — the frontend never reads or holds it.
+        // sends automatically - the frontend never reads or holds it.
         try {
           const data = await UserService.refreshToken()
           if (data?.access_token) {
